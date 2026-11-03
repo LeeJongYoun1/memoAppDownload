@@ -2,12 +2,14 @@
 
 카톡 등 메신저에서 받은 메시지·사진을 **공유 → 쏙메모**로 폴더별 메모에 바로 붙여 두는 앱입니다.
 
-## 최신 버전: 1.0.1
+## 최신 버전: 1.0.2
+
+**바뀐 점:** 공유로 붙일 때 `(카카오톡) 26/11/03 12:45`처럼 보낸 앱 이름과 날짜·시간이 함께 들어갑니다.
 
 | 파일 | 누구에게 |
 |---|---|
-| [ssokmemo-1.0.1.apk](https://github.com/LeeJongYoun1/memoAppDownload/raw/main/ssokmemo-1.0.1.apk) | **대부분의 휴대폰** (먼저 이것으로 설치해 보세요) |
-| [ssokmemo-1.0.1-old-phone.apk](https://github.com/LeeJongYoun1/memoAppDownload/raw/main/ssokmemo-1.0.1-old-phone.apk) | 위 파일이 설치되지 않는 오래된 휴대폰 |
+| [ssokmemo-1.0.2.apk](https://github.com/LeeJongYoun1/memoAppDownload/raw/main/ssokmemo-1.0.2.apk) | **대부분의 휴대폰** (먼저 이것으로 설치해 보세요) |
+| [ssokmemo-1.0.2-old-phone.apk](https://github.com/LeeJongYoun1/memoAppDownload/raw/main/ssokmemo-1.0.2-old-phone.apk) | 위 파일이 설치되지 않는 오래된 휴대폰 |
 
 ## 설치 방법
 1. 위 링크를 눌러 APK 파일을 내려받습니다.
