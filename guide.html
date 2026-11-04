@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>쏙메모 사용 설명서</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: 한 줄 기둥(본문 약 40em) + 각 단계는 "그림 | 설명" 2열, 폰 폭에서는 1열로 쌓임 */
+:root {
+  --bg: #FFFDF4;
+  --fg: #3B3220;
+  --sub: #6F6340;
+  --line: #EEDFA6;
+  --panel: #FFF6D2;
+  --accent: #F2BE00;
+  --accent-ink: #3B3220;
+  --link: #8A5A00;
+  --tap: #E8590C;
+  /* 그림 속 앱 화면(앱 자체 색 그대로, 테마와 무관) */
+  --app-cream: #FFFBEA;
+  --app-lemon: #FFD43B;
+  --app-lemon-light: #FFE58A;
+  --app-selected: #FFF1B8;
+  --app-ink: #3B3220;
+  --app-sub: #7A6A2E;
+  --app-card: #FFFFFF;
+  --frame: #2B2618;
+  --sys-bg: #F2F2F5;
+  --sys-ink: #1E1E22;
+  --sys-blue: #2F6BFF;
+  --display: "Jua", "Noto Sans KR", system-ui, sans-serif;
+  --body: "Noto Sans KR", system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1C1A14; --fg: #F3ECD6; --sub: #C2B78F; --line: #3D3826; --panel: #27241A;
+    --accent: #FFD43B; --accent-ink: #2A2414; --link: #FFD95C; --tap: #FF8A4C; --frame: #0E0D09;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1C1A14; --fg: #F3ECD6; --sub: #C2B78F; --line: #3D3826; --panel: #27241A;
+  --accent: #FFD43B; --accent-ink: #2A2414; --link: #FFD95C; --tap: #FF8A4C; --frame: #0E0D09;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--body);
+  font-size: 17px; line-height: 1.75; word-break: keep-all; overflow-wrap: anywhere;
+}
+.wrap {
+  max-width: 920px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+}
+h1, h2, h3 { font-family: var(--display); font-weight: 400; text-wrap: balance; line-height: 1.3; margin: 0; }
+h1 { font-size: clamp(2.2rem, 7vw, 3.2rem); }
+h2 { font-size: clamp(1.6rem, 4.6vw, 2.1rem); }
+h3 { font-size: 1.25rem; }
+p { margin: 0; }
+a { color: var(--link); font-weight: 700; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--tap); outline-offset: 2px; }
+b, strong { font-weight: 700; }
+.ui { /* 화면에 보이는 버튼·메뉴 이름 */
+  display: inline-block; padding: 0 .45em; border-radius: 6px; font-weight: 700;
+  background: var(--panel); border: 1px solid var(--line); line-height: 1.5; white-space: nowrap;
+}
+
+/* 머리 */
+header.hero { display: grid; gap: 16px; padding-bottom: 28px; border-bottom: 2px dashed var(--line); }
+.hero .lead { font-size: 1.1rem; color: var(--sub); max-width: 36em; }
+.hero-row { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; }
+.hero-row > div { flex: 1 1 300px; min-width: 0; display: grid; gap: 14px; }
+.dl {
+  display: inline-flex; align-items: center; gap: 10px; justify-self: start;
+  background: var(--accent); color: var(--accent-ink); text-decoration: none;
+  font-family: var(--display); font-size: 1.25rem; padding: 12px 22px; border-radius: 14px;
+  box-shadow: 0 3px 0 #C99A00;
+}
+.url { font-size: .82rem; color: var(--sub); word-break: break-all; }
+.toc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.toc a {
+  font-weight: 500; font-size: .92rem; text-decoration: none; color: var(--fg);
+  border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; background: var(--panel);
+}
+
+/* 섹션과 단계 */
+section { padding-block: 44px 8px; display: grid; gap: 20px; scroll-margin-top: 12px; }
+.intro { color: var(--sub); max-width: 40em; }
+.step { display: grid; grid-template-columns: 250px 1fr; gap: 24px; align-items: start; padding-block: 18px; border-top: 1px solid var(--line); }
+.step:first-of-type { border-top: 0; }
+.step .text { min-width: 0; display: grid; gap: 10px; }
+.num {
+  font-family: var(--display); font-size: 1rem; color: var(--accent-ink); background: var(--accent);
+  width: 2em; height: 2em; border-radius: 50%; display: inline-grid; place-items: center; margin-right: 8px;
+}
+.step h3 { display: flex; align-items: center; }
+.tip {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+  padding: 10px 14px; font-size: .95rem;
+}
+.tip b { color: var(--link); }
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
+@media (max-width: 640px) {
+  .step { grid-template-columns: 1fr; gap: 14px; }
+  .step .fig { justify-self: center; }
+}
+
+/* ===== 그림: 휴대폰 화면 ===== */
+.fig { width: 100%; max-width: 250px; }
+.phone {
+  width: 100%; border: 7px solid var(--frame); border-radius: 26px; overflow: hidden;
+  background: var(--app-cream); color: var(--app-ink); font-family: var(--body);
+  font-size: 12.5px; line-height: 1.45; position: relative; box-shadow: 0 6px 18px rgba(0,0,0,.15);
+}
+.phone.sys { background: var(--sys-bg); color: var(--sys-ink); }
+.status { height: 18px; font-size: 10px; display: flex; justify-content: space-between; padding: 2px 12px 0; opacity: .7; }
+.appbar { display: flex; align-items: center; gap: 8px; padding: 6px 12px 8px; font-size: 15px; font-weight: 700; }
+.appbar .sp { flex: 1; }
+.appbar .ico { font-weight: 700; font-size: 15px; opacity: .85; display: inline-flex; }
+.list { display: grid; gap: 6px; padding: 4px 10px 12px; }
+.row { background: var(--app-card); border-radius: 10px; padding: 8px 10px; display: flex; gap: 8px; align-items: center; }
+.row .k { opacity: .65; font-size: 11px; }
+.fab {
+  position: absolute; right: 12px; bottom: 12px; width: 38px; height: 38px; border-radius: 12px;
+  background: var(--app-lemon); display: grid; place-items: center; font-size: 22px; font-weight: 700;
+}
+.screen-pad { padding: 8px 12px 12px; display: grid; gap: 8px; }
+.dim { background: rgba(0,0,0,.35); height: 60px; }
+.sheet { background: var(--app-cream); border-radius: 18px 18px 0 0; padding: 6px 12px 12px; display: grid; gap: 7px; }
+.grab { width: 30px; height: 3px; border-radius: 2px; background: #E8D9A0; justify-self: center; }
+.lbl { color: var(--app-sub); font-size: 11px; }
+.bubble { background: var(--app-lemon-light); border-radius: 4px 12px 12px 12px; padding: 7px 9px; box-shadow: 0 2px 0 #E9C94A; }
+.panel { background: rgba(255,212,59,.13); border-radius: 12px; padding: 5px; display: grid; gap: 4px; }
+.mini { background: var(--app-card); border-radius: 8px; padding: 6px 8px; }
+.tree { padding: 3px 6px; }
+.tree.sel { background: var(--app-selected); border-radius: 6px; }
+.btns { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; }
+.b { border-radius: 999px; padding: 4px 10px; font-weight: 700; font-size: 11.5px; border: 1.5px solid var(--app-ink); }
+.b.fill { background: var(--app-lemon); border-color: var(--app-lemon); }
+.b.text { border-color: transparent; }
+.stamp { color: var(--app-sub); font-size: 11.5px; }
+.field { background: var(--app-card); border: 1.5px solid var(--app-lemon); border-radius: 10px; padding: 7px 9px; min-height: 52px; }
+.caret { display: inline-block; width: 1.5px; height: 1.1em; background: var(--app-ink); vertical-align: -2px; }
+.kbd { background: #D9D6CC; height: 64px; display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; padding: 6px; }
+.kbd i { background: #FFF; border-radius: 3px; }
+.photo { height: 70px; border-radius: 8px; background: linear-gradient(135deg, #9BC4E8, #F7D58C 60%, #E7A86B); }
+.filetile { background: var(--app-lemon-light); border-radius: 10px; padding: 7px 9px; display: flex; gap: 6px; align-items: center; font-weight: 500; }
+.menu { position: absolute; right: 8px; top: 40px; background: #FFF; border-radius: 10px; box-shadow: 0 4px 14px rgba(0,0,0,.2); padding: 4px 0; min-width: 120px; }
+.menu div { padding: 7px 14px; }
+.dialog { margin: 18px 14px; background: #FFF; color: var(--sys-ink); border-radius: 16px; padding: 14px; display: grid; gap: 10px; box-shadow: 0 6px 20px rgba(0,0,0,.2); }
+.dialog .t { font-weight: 700; font-size: 13.5px; }
+.dialog .acts { display: flex; justify-content: flex-end; gap: 14px; color: var(--sys-blue); font-weight: 700; }
+.toggle { display: flex; justify-content: space-between; align-items: center; background: #FFF; border-radius: 12px; padding: 10px 12px; }
+.sw { width: 34px; height: 20px; border-radius: 999px; background: var(--sys-blue); position: relative; }
+.sw::after { content: ""; position: absolute; right: 2px; top: 2px; width: 16px; height: 16px; border-radius: 50%; background: #FFF; }
+.chat { background: #B2C7DA; padding: 10px; display: grid; gap: 8px; }
+.kbubble { background: #FFF; border-radius: 4px 12px 12px 12px; padding: 7px 9px; max-width: 80%; color: #222; }
+.kbubble.me { background: #FEE500; justify-self: end; border-radius: 12px 4px 12px 12px; }
+.kmenu { background: #FFF; border-radius: 12px; margin: 0 10px 10px; color: #222; display: grid; grid-template-columns: 1fr 1fr 1fr; text-align: center; font-size: 11.5px; overflow: hidden; }
+.kmenu div { padding: 9px 4px; border: .5px solid #EEE; }
+.chooser { background: #FFF; color: var(--sys-ink); border-radius: 16px 16px 0 0; padding: 12px; display: grid; gap: 10px; }
+.apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; font-size: 10.5px; }
+.apps .ic { width: 34px; height: 34px; border-radius: 10px; margin: 0 auto 3px; display: grid; place-items: center; font-weight: 700; color: #FFF; font-size: 13px; }
+.qs { background: #1F2228; color: #EEE; padding: 10px; display: grid; gap: 8px; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.tile { background: #3A3F48; border-radius: 14px; padding: 9px 10px; font-size: 11.5px; display: flex; gap: 6px; align-items: center; }
+.tile.on { background: #A8C7FA; color: #062E6F; }
+.tile.ssok { background: var(--app-lemon); color: var(--app-ink); font-weight: 700; }
+.notif { margin: 10px; background: #FFF; border-radius: 14px; padding: 10px; display: grid; gap: 4px; color: var(--sys-ink); }
+
+/* 누르는 곳 표시 */
+.tap { position: relative; outline: 2.5px solid var(--tap); outline-offset: 2px; border-radius: 8px; }
+.tap::after {
+  content: ""; position: absolute; inset: -7px; border-radius: 12px; border: 2px solid var(--tap);
+  animation: pulse 1.6s ease-out infinite; pointer-events: none;
+}
+@keyframes pulse { from { opacity: .9; transform: scale(.96); } to { opacity: 0; transform: scale(1.12); } }
+@media (prefers-reduced-motion: reduce) { .tap::after { animation: none; opacity: 0; } }
+.cap { font-size: .82rem; color: var(--sub); text-align: center; margin-top: 8px; }
+
+/* 자주 묻는 질문 */
+details { border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; background: var(--panel); }
+details + details { margin-top: 10px; }
+summary { cursor: pointer; font-weight: 700; }
+details p { margin-top: 8px; }
+footer { margin-top: 48px; padding-top: 18px; border-top: 2px dashed var(--line); color: var(--sub); font-size: .9rem; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero-row">
+    <div>
+      <h1>쏙메모 사용 설명서</h1>
+      <p class="lead">카톡에서 받은 메시지, 사진, 파일을 <b>공유 → 쏙메모</b> 두 번 터치로 내 폴더 속 메모에 쏙 붙여 두는 앱입니다. 처음 써 보는 분도 이 설명서를 위에서부터 따라 하면 됩니다.</p>
+      <a class="dl" href="https://github.com/LeeJongYoun1/memoAppDownload/raw/main/ssokmemo-1.0.9.apk">쏙메모 1.0.9 내려받기</a>
+      <p class="url">주소: https://github.com/LeeJongYoun1/memoAppDownload/raw/main/ssokmemo-1.0.9.apk · 안드로이드 폰 전용 · 약 33MB</p>
+    </div>
+  </div>
+  <nav class="toc" aria-label="차례">
+    <a href="#install">1. 설치하기</a>
+    <a href="#home">2. 첫 화면</a>
+    <a href="#make">3. 폴더·메모 만들기</a>
+    <a href="#share">4. 카톡에서 붙이기</a>
+    <a href="#photo">5. 사진·파일</a>
+    <a href="#edit">6. 메모 보고 고치기</a>
+    <a href="#search">7. 찾기</a>
+    <a href="#quick">8. 빠른 메모</a>
+    <a href="#backup">9. 백업·복원</a>
+    <a href="#faq">자주 묻는 질문</a>
+  </nav>
+</header>
+
+<!-- 1. 설치 -->
+<section id="install">
+  <h2>1. 설치하기</h2>
+  <p class="intro">쏙메모는 Play 스토어가 아니라 파일(APK)로 직접 설치합니다. 처음 한 번만 "허용" 설정이 필요하고, 그다음부터는 파일을 누르기만 하면 됩니다.</p>
+
+  <div class="step">
+    <div class="fig">
+      <div class="phone sys">
+        <div class="status"><span>9:30</span><span>▮▮▮</span></div>
+        <div class="screen-pad" style="background:#FFF">
+          <div style="font-weight:700;font-size:14px">쏙메모 다운로드</div>
+          <div style="font-size:11.5px;opacity:.8">카톡 등 메신저에서 받은 메시지·사진을 공유 → 쏙메모로…</div>
+          <div style="font-weight:700">최신 버전: 1.0.9</div>
+          <div class="tap" style="color:var(--sys-blue);font-weight:700;padding:2px 4px">ssokmemo-1.0.9.apk 내려받기</div>
+          <div style="font-size:11px;opacity:.7">(모든 휴대폰용, 약 33MB)</div>
+        </div>
+      </div>
+      <p class="cap">다운로드 페이지</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">1</span>파일 내려받기</h3>
+      <p>위의 노란 <span class="ui">쏙메모 1.0.9 내려받기</span> 버튼을 누르거나, 받은 링크를 열고 <span class="ui">ssokmemo-1.0.9.apk 내려받기</span>를 누릅니다.</p>
+      <div class="tip"><b>카톡에서 링크를 눌렀다면</b> 카톡 안의 브라우저에서는 내려받기가 잘 안 될 수 있어요. 오른쪽 위 <span class="ui">⋮</span> → <span class="ui">다른 브라우저로 열기</span>(Chrome이나 삼성 인터넷)를 누른 뒤 다시 누르세요.</div>
+      <p>"이 파일은 기기에 손상을 줄 수 있습니다" 같은 안내가 나오면 <span class="ui">다운로드</span>를 누릅니다. 쏙메모는 인터넷도 쓰지 않는 안전한 앱이에요.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="fig">
+      <div class="phone sys">
+        <div class="status"><span>9:31</span><span>▮▮▮</span></div>
+        <div class="notif">
+          <div style="font-size:11px;opacity:.7">Chrome · 방금</div>
+          <div style="font-weight:700">ssokmemo-1.0.9.apk</div>
+          <div style="font-size:11.5px">다운로드 완료</div>
+          <div style="display:flex;justify-content:flex-end"><span class="tap" style="color:var(--sys-blue);font-weight:700;padding:2px 8px">열기</span></div>
+        </div>
+        <div style="height:120px"></div>
+      </div>
+      <p class="cap">알림창의 다운로드 완료</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">2</span>내려받은 파일 열기</h3>
+      <p>다운로드가 끝나면 화면 아래나 알림창에 <span class="ui">열기</span>가 나옵니다. 그걸 누르세요.</p>
+      <p>놓쳤다면 <b>내 파일</b> 앱 → <span class="ui">다운로드</span> 폴더에서 <b>ssokmemo-1.0.9.apk</b>를 누르면 됩니다.</p>
+    </div>
+  </div>
+
+  <div class="step" id="autoblock">
+    <div class="fig">
+      <div class="phone sys">
+        <div class="status"><span>9:31</span><span>▮▮▮</span></div>
+        <div class="screen-pad">
+          <div style="font-size:11px;opacity:.7">‹ 보안 및 개인정보 보호</div>
+          <div style="font-weight:700;font-size:14px">보안 위험 자동 차단</div>
+          <div style="font-size:11px;opacity:.75">승인되지 않은 출처의 앱 설치와 악성 활동을 차단합니다.</div>
+          <div class="toggle tap"><span>사용 안 함</span><span class="sw" style="background:#BBB"></span></div>
+        </div>
+        <div style="height:60px"></div>
+      </div>
+      <p class="cap">갤럭시: 스위치를 끈 모습</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">!</span>설치가 막히면: 보안 위험 자동 차단 끄기 (갤럭시)</h3>
+      <p>갤럭시에서 파일을 눌렀는데 <b>"보안 위험 자동 차단(자동 차단기)에 의해 차단됨"</b> 같은 안내가 나오고 설치가 안 되면, 이 기능을 잠깐 꺼야 합니다.</p>
+      <ul class="plain">
+        <li>① <b>설정</b> 앱 → <span class="ui">보안 및 개인정보 보호</span></li>
+        <li>② <span class="ui">보안 위험 자동 차단</span> (예전 휴대폰은 <span class="ui">자동 차단기</span>)</li>
+        <li>③ 스위치를 눌러 <b>끄기</b> → 잠금 화면 비밀번호·지문을 물어보면 입력</li>
+        <li>④ 다운로드 폴더로 돌아가 <b>ssokmemo-1.0.9.apk</b>를 다시 눌러 설치</li>
+      </ul>
+      <p>안내창에 <span class="ui">설정</span> 버튼이 있으면 그걸 눌러도 같은 화면으로 바로 갑니다.</p>
+      <div class="tip"><b>설치가 끝나면 다시 켜 두세요.</b> 같은 화면에서 스위치를 다시 켜면 됩니다. 켜도 이미 설치된 쏙메모는 그대로 잘 동작해요. 다음 업데이트 때만 다시 잠깐 끄면 됩니다.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="fig">
+      <div class="phone sys">
+        <div class="status"><span>9:31</span><span>▮▮▮</span></div>
+        <div class="screen-pad">
+          <div style="font-weight:700;font-size:14px">출처를 알 수 없는 앱 설치</div>
+          <div class="toggle tap"><span>이 출처 허용</span><span class="sw"></span></div>
+          <div style="font-size:11px;opacity:.75">이 출처의 앱을 설치하면 휴대전화와 데이터가 손상될 수 있습니다…</div>
+        </div>
+        <div style="height:70px"></div>
+      </div>
+      <p class="cap">처음 한 번만 나와요</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">3</span>"이 출처 허용" 켜기 (처음 한 번)</h3>
+      <p>"보안을 위해 이 출처의 알 수 없는 앱을 설치할 수 없습니다" 같은 안내가 나오면 <span class="ui">설정</span>을 누릅니다.</p>
+      <p>열린 화면에서 <span class="ui">이 출처 허용</span> 스위치를 켜고, 뒤로 가기를 누르면 설치 화면으로 돌아옵니다.</p>
+      <div class="tip">휴대폰마다 문구가 조금 달라요. "알 수 없는 앱 설치", "이 출처 허용", "허용" 같은 말이 보이면 켜면 됩니다.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="fig">
+      <div class="phone sys">
+        <div class="status"><span>9:32</span><span>▮▮▮</span></div>
+        <div class="dialog">
+          <div class="t">Play 프로텍트에서 차단됨</div>
+          <div style="font-size:11.5px">이 앱의 개발자를 알 수 없습니다…</div>
+          <div style="font-size:11.5px" class="tap">&nbsp;세부정보 ▾&nbsp;</div>
+          <div style="font-size:11.5px;color:var(--sys-blue);font-weight:700">무시하고 설치</div>
+          <div class="acts"><span>확인</span></div>
+        </div>
+        <div style="height:40px"></div>
+      </div>
+      <p class="cap">나올 수도, 안 나올 수도 있어요</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">4</span>Play 프로텍트 경고가 나오면</h3>
+      <p>Play 스토어에 올라가지 않은 앱이라 구글이 한 번 확인을 요청합니다. <span class="ui">세부정보</span>를 눌러 펼친 뒤 <span class="ui">무시하고 설치</span>를 누르세요.</p>
+      <p>"앱 검사" 화면이 나오면 <span class="ui">앱 검사하지 않고 설치</span> 또는 <span class="ui">설치</span>를 누르면 됩니다.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="fig">
+      <div class="phone sys">
+        <div class="status"><span>9:32</span><span>▮▮▮</span></div>
+        <div class="screen-pad" style="justify-items:center;padding-top:30px">
+          <div style="width:52px;height:52px;border-radius:14px;background:var(--app-lemon);display:grid;place-items:center;font-family:var(--display);font-size:20px;color:var(--app-ink)">쏙</div>
+          <div style="font-weight:700">쏙메모</div>
+          <div style="font-size:11.5px">앱이 설치되었습니다.</div>
+          <div style="display:flex;gap:30px;margin-top:20px;font-weight:700;color:var(--sys-blue)"><span>완료</span><span class="tap" style="padding:0 6px">열기</span></div>
+        </div>
+        <div style="height:60px"></div>
+      </div>
+      <p class="cap">설치 끝</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">5</span>설치 → 열기</h3>
+      <p><span class="ui">설치</span>를 누르고 잠시 기다리면 "앱이 설치되었습니다"가 나옵니다. <span class="ui">열기</span>를 누르면 쏙메모가 시작돼요.</p>
+      <p>홈 화면이나 앱 목록에 노란 <b>쏙메모</b> 아이콘도 생깁니다.</p>
+      <div class="tip"><b>새 버전이 나왔을 때</b>는 새 파일을 똑같이 내려받아 설치하면 됩니다. 지우지 않고 그 위에 설치하면 메모는 그대로 남아요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. 첫 화면 -->
+<section id="home">
+  <h2>2. 첫 화면 둘러보기</h2>
+  <p class="intro">쏙메모는 컴퓨터의 폴더처럼 생겼습니다. 폴더 안에 메모를 넣고, 폴더 안에 또 폴더를 만들 수도 있어요.</p>
+  <div class="step">
+    <div class="fig">
+      <div class="phone" style="height:330px">
+        <div class="status"><span>9:35</span><span>▮▮▮</span></div>
+        <div class="appbar"><span>쏙메모</span><span class="sp"></span>
+          <span class="ico" aria-label="검색"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#3B3220" stroke-width="2"/><path d="M11 11l4 4" stroke="#3B3220" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <span class="ico">⋮</span></div>
+        <div class="list">
+          <div class="row"><span>📁</span><b>가족</b></div>
+          <div class="row"><span>📁</span><b>회사</b></div>
+          <div class="row"><span>📁</span><b>아이디어</b></div>
+          <div class="row"><span class="k">메모</span>병원 예약 10시</div>
+          <div class="row"><span class="k">메모</span>우유 사기</div>
+        </div>
+        <div class="fab">+</div>
+      </div>
+      <p class="cap">폴더가 위, 메모가 아래</p>
+    </div>
+    <div class="text">
+      <h3>화면에 있는 것</h3>
+      <ul class="plain">
+        <li><b>폴더</b>: 누르면 그 폴더 안으로 들어갑니다. 뒤로 가기로 나와요.</li>
+        <li><b>메모</b>: 누르면 메모 내용을 봅니다.</li>
+        <li><span class="ui">돋보기</span>: 폴더나 메모를 이름·내용으로 찾습니다. (7번)</li>
+        <li><span class="ui">⋮</span>: <b>빠른 메모 켜기, 백업하기, 복원하기</b> 메뉴. 맨 처음 화면에만 있어요.</li>
+        <li>오른쪽 아래 노란 <span class="ui">+</span>: 새 폴더나 새 메모를 만듭니다. (3번)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 만들기 -->
+<section id="make">
+  <h2>3. 폴더와 메모 만들기, 정리하기</h2>
+  <div class="step">
+    <div class="fig">
+      <div class="phone" style="height:300px;display:grid;grid-template-rows:auto 1fr auto">
+        <div class="status"><span>9:36</span><span>▮▮▮</span></div>
+        <div class="dim" style="height:auto"></div>
+        <div class="sheet">
+          <div class="grab"></div>
+          <div class="mini tap">📁 새 폴더</div>
+          <div class="mini">📝 새 메모</div>
+        </div>
+      </div>
+      <p class="cap">+ 를 누르면 나오는 선택</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">1</span>+ 눌러서 만들기</h3>
+      <p>오른쪽 아래 <span class="ui">+</span> → <span class="ui">새 폴더</span> 또는 <span class="ui">새 메모</span>를 고릅니다.</p>
+      <p>이름(제목)을 적고 <span class="ui">만들기</span>를 누르면 끝. 지금 들어와 있는 폴더 안에 만들어져요.</p>
+      <div class="tip">예: "가족", "회사", "레시피" 폴더를 만들어 두면 카톡에서 받은 내용을 종류별로 모으기 좋아요.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="fig">
+      <div class="phone" style="height:300px;display:grid;grid-template-rows:auto 1fr auto">
+        <div class="status"><span>9:37</span><span>▮▮▮</span></div>
+        <div class="list" style="align-content:start"><div class="row tap"><span>📁</span><b>회사</b></div><div class="row"><span class="k">메모</span>우유 사기</div></div>
+        <div class="sheet">
+          <div class="grab"></div>
+          <div class="mini">이름 바꾸기</div>
+          <div class="mini">이동…</div>
+          <div class="mini">삭제</div>
+        </div>
+      </div>
+      <p class="cap">길게 누르면 나오는 메뉴</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">2</span>길게 눌러서 정리하기</h3>
+      <p>폴더나 메모를 <b>손가락으로 1초쯤 꾹</b> 누르면 메뉴가 나옵니다.</p>
+      <ul class="plain">
+        <li><span class="ui">이름 바꾸기</span>: 새 이름을 적고 <span class="ui">저장</span>.</li>
+        <li><span class="ui">이동…</span>: "어디로 옮길까요?"에서 옮길 폴더를 누릅니다.</li>
+        <li><span class="ui">삭제</span>: 한 번 더 확인한 뒤 지웁니다. <b>폴더를 지우면 그 안의 메모도 함께 지워지니</b> 조심하세요.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 4. 공유 -->
+<section id="share">
+  <h2>4. 카톡에서 받은 내용 붙이기</h2>
+  <p class="intro">쏙메모의 핵심 기능입니다. 쏙메모를 열 필요 없이, 카톡(또는 문자, 인터넷, 갤러리 등)에서 바로 보냅니다.</p>
+
+  <div class="step">
+    <div class="fig">
+      <div class="phone" style="background:#B2C7DA">
+        <div class="status"><span>10:02</span><span>▮▮▮</span></div>
+        <div class="chat">
+          <div class="kbubble">내일 3시 강남역 2번 출구에서 만나요</div>
+          <div class="kbubble tap">주소: 서울시 강남구 테헤란로 123, 5층</div>
+        </div>
+        <div class="kmenu">
+          <div>답장</div><div>복사</div><div>전달</div>
+          <div class="tap" style="font-weight:700">공유</div><div>나에게</div><div>삭제</div>
+        </div>
+      </div>
+      <p class="cap">메시지를 꾹 → 공유</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">1</span>메시지를 꾹 누르고 <span class="ui" style="margin-left:6px">공유</span></h3>
+      <p>모아 두고 싶은 카톡 메시지를 손가락으로 꾹 누릅니다. 나오는 메뉴에서 <span class="ui">공유</span>를 누르세요.</p>
+      <div class="tip">카톡 버전에 따라 메뉴 모양과 이름이 조금 다를 수 있어요. 인터넷 브라우저나 갤러리에서는 <b>공유 아이콘</b>(점 세 개가 선으로 이어진 모양)을 누르면 됩니다.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="fig">
+      <div class="phone sys" style="display:grid;grid-template-rows:auto 1fr auto;height:300px">
+        <div class="status"><span>10:02</span><span>▮▮▮</span></div>
+        <div style="background:rgba(0,0,0,.3)"></div>
+        <div class="chooser">
+          <div style="font-weight:700">공유</div>
+          <div class="apps">
+            <div><div class="ic" style="background:#FEE500;color:#3B1E1E">톡</div>카카오톡</div>
+            <div><div class="ic" style="background:#4C8BF5">M</div>메시지</div>
+            <div class="tap" style="padding:3px 0"><div class="ic" style="background:var(--app-lemon);color:var(--app-ink);font-family:var(--display)">쏙</div><b>쏙메모</b></div>
+            <div><div class="ic" style="background:#34A853">D</div>Drive</div>
+          </div>
+        </div>
+      </div>
+      <p class="cap">앱 목록에서 쏙메모</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">2</span>앱 목록에서 <span class="ui" style="margin-left:6px">쏙메모</span></h3>
+      <p>공유할 앱 목록이 나오면 노란 <b>쏙메모</b>를 누릅니다. 안 보이면 목록을 옆이나 아래로 넘겨 보세요.</p>
+      <div class="tip"><b>자주 쓴다면</b> 쏙메모 아이콘을 꾹 눌러 <span class="ui">고정</span>해 두면 다음부터 맨 앞에 나와요. (휴대폰에 따라 없는 기능일 수 있어요.)</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="fig">
+      <div class="phone" style="background:#888">
+        <div class="status" style="color:#FFF"><span>10:02</span><span>▮▮▮</span></div>
+        <div class="dim" style="height:20px"></div>
+        <div class="sheet">
+          <div class="grab"></div>
+          <div class="lbl">붙여넣을 내용</div>
+          <div class="bubble">주소: 서울시 강남구 테헤란로 123, 5층</div>
+          <div class="lbl">최근 붙여넣은 메모</div>
+          <div class="panel"><div class="mini">↺ 약속 장소 모음</div></div>
+          <div class="lbl">폴더</div>
+          <div class="panel">
+            <div class="tree">🏠 쏙메모 (최상위)</div>
+            <div class="tree" style="padding-left:16px">▾ 가족</div>
+            <div class="tree tap" style="padding-left:30px">📝 약속 장소 모음</div>
+            <div class="tree" style="padding-left:16px">▸ 회사</div>
+          </div>
+          <div class="lbl" style="margin-top:4px">만들 위치: 쏙메모 › 가족</div>
+          <div class="btns"><span class="b">+ 새 폴더</span><span class="b fill">+ 새 메모</span></div>
+        </div>
+      </div>
+      <p class="cap">공유하면 아래에서 올라오는 창</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">3</span>어디에 붙일지 고르기</h3>
+      <p>카톡 위에 쏙메모 창이 아래에서 올라옵니다. 맨 위 노란 말풍선이 붙일 내용이에요.</p>
+      <ul class="plain">
+        <li><b>이미 있는 메모에 이어 붙이기</b>: 폴더를 눌러 펼친 뒤 원하는 메모를 누르면 그 메모 맨 끝에 붙습니다.</li>
+        <li><b>최근 붙여넣은 메모</b>: 방금 쓴 메모가 맨 위에 나와서 한 번에 누를 수 있어요.</li>
+        <li><b>새 메모로 만들기</b>: 넣을 폴더를 누른 뒤(<span class="ui">만들 위치</span>에 표시됨) <span class="ui">+ 새 메모</span>. 제목은 내용 첫 줄로 자동으로 정해져요.</li>
+        <li><span class="ui">+ 새 폴더</span>로 이 자리에서 바로 폴더를 만들 수도 있어요.</li>
+      </ul>
+      <p>창 바깥(위쪽 어두운 부분)을 누르거나 뒤로 가기를 누르면 아무것도 하지 않고 닫힙니다.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="fig">
+      <div class="phone" style="background:#888">
+        <div class="status" style="color:#FFF"><span>10:03</span><span>▮▮▮</span></div>
+        <div class="dim" style="height:40px"></div>
+        <div class="sheet">
+          <div class="grab"></div>
+          <div style="font-weight:700;font-size:14px">약속 장소 모음</div>
+          <div class="stamp">(카카오톡) 26/10/28 18:20<br>홍대입구역 9번 출구</div>
+          <div style="height:6px"></div>
+          <div class="stamp" style="font-weight:700">(카카오톡) 26/11/04 10:03</div>
+          <div class="field">주소: 서울시 강남구 테헤란로 123, 5층</div>
+          <div class="btns"><span class="b text">되돌리기</span><span class="b fill tap">완료</span></div>
+        </div>
+      </div>
+      <p class="cap">붙인 결과 확인</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">4</span>확인하고 <span class="ui" style="margin-left:6px">완료</span></h3>
+      <p>붙인 결과가 바로 보입니다. 내용 위에는 <b>어느 앱에서 언제 받았는지</b>가 한 줄로 자동으로 적혀요. 예: <span class="ui">(카카오톡) 26/11/04 10:03</span></p>
+      <ul class="plain">
+        <li>붙인 글은 이 자리에서 바로 고칠 수 있어요.</li>
+        <li><span class="ui">완료</span>: 저장하고 창을 닫습니다. 카톡 화면으로 그대로 돌아와요.</li>
+        <li><span class="ui">되돌리기</span>: 잘못 붙였을 때 누르면 붙이기 전으로 돌아가고, 다시 고를 수 있어요.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 5. 사진·파일 -->
+<section id="photo">
+  <h2>5. 사진과 파일 붙이기</h2>
+  <div class="step">
+    <div class="fig">
+      <div class="phone">
+        <div class="status"><span>10:10</span><span>▮▮▮</span></div>
+        <div class="appbar"><span>‹</span><span>가족 여행</span><span class="sp"></span><span class="ico">✎</span></div>
+        <div class="screen-pad">
+          <div class="stamp">(카카오톡) 26/11/04 10:10</div>
+          <div class="photo"></div>
+          <div class="stamp">(카카오톡) 26/11/04 10:12</div>
+          <div class="filetile tap"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M11 5l-5 5a1.5 1.5 0 002 2l6-6a3 3 0 00-4-4L4 8a4.5 4.5 0 006 6l4-4" stroke="#3B3220" stroke-width="1.6" stroke-linecap="round"/></svg>제주 일정표.pdf</div>
+        </div>
+      </div>
+      <p class="cap">사진은 그림으로, 파일은 노란 칸으로</p>
+    </div>
+    <div class="text">
+      <h3>보내는 방법은 글과 똑같아요</h3>
+      <p>카톡 사진이나 파일(PDF, 문서, 엑셀 등)도 <b>꾹 누르기(또는 공유 아이콘) → 공유 → 쏙메모</b>로 보내면 됩니다. 사진 여러 장도 한 번에 보낼 수 있어요.</p>
+      <ul class="plain">
+        <li>메모 안에서 <b>사진</b>은 그림으로 보입니다.</li>
+        <li><b>파일</b>은 노란 칸에 이름이 보이고, <b>누르면</b> 그 파일을 열 수 있는 앱(PDF 보기, 한컴오피스 등)으로 열립니다.</li>
+        <li>사진과 파일은 쏙메모 안에 따로 복사해 두기 때문에, 카톡 대화방이 지워지거나 기간이 지나도 남아 있어요.</li>
+      </ul>
+      <div class="tip"><b>20MB가 넘는 파일</b>은 붙지 않아요. 이때는 "20MB가 넘거나 읽을 수 없는 파일은 붙이지 않아요" 안내가 나옵니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. 편집 -->
+<section id="edit">
+  <h2>6. 메모 보고 고치기</h2>
+  <div class="step">
+    <div class="fig">
+      <div class="phone">
+        <div class="status"><span>10:20</span><span>▮▮▮</span></div>
+        <div class="appbar"><span>‹</span><span>약속 장소 모음</span><span class="sp"></span><span class="ico tap" style="padding:0 4px">✎</span></div>
+        <div class="screen-pad">
+          <div class="stamp">(카카오톡) 26/11/04 10:03</div>
+          <div>주소: 서울시 강남구 테헤란로 123, 5층</div>
+          <div class="stamp">(인터넷) 26/11/04 10:15</div>
+          <div style="color:#1F5FBF;text-decoration:underline">https://map.example.com/abc</div>
+        </div>
+        <div style="height:60px"></div>
+      </div>
+      <p class="cap">읽기 화면, 오른쪽 위 연필</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">1</span>메모 읽기</h3>
+      <p>메모를 누르면 내용이 보입니다. 내용 속 <b>인터넷 주소(링크)는 파란 글씨</b>로 보이고, 누르면 바로 열려요.</p>
+      <p>고치고 싶으면 오른쪽 위 <span class="ui">연필(편집)</span>을 누릅니다.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="fig">
+      <div class="phone">
+        <div class="status"><span>10:21</span><span>▮▮▮</span></div>
+        <div class="appbar" style="gap:6px"><span>‹</span><span class="sp"></span><span class="ico">↶</span><span style="font-size:12px">취소</span><span style="font-size:12px;background:var(--app-lemon);border-radius:999px;padding:2px 8px">완료</span></div>
+        <div class="screen-pad">
+          <div class="lbl">제목</div>
+          <div class="field" style="min-height:0">약속 장소 모음</div>
+          <div class="lbl">내용</div>
+          <div class="field" style="min-height:90px">주소: 서울시 강남구 테헤란로 123, 5층<br>엘리베이터 타고 5층<span class="caret"></span></div>
+        </div>
+        <div class="kbd"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <p class="cap">편집 화면 위쪽 버튼 세 개</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">2</span>고치고 저장하기</h3>
+      <p>제목과 내용을 자유롭게 고칩니다. <b>쓰는 동안 자동으로 저장</b>되니 따로 저장 버튼을 찾지 않아도 돼요.</p>
+      <ul class="plain">
+        <li><span class="ui">↶ 이전으로</span>: 방금 고친 것을 한 단계씩 되돌립니다. 여러 번 누를 수 있어요.</li>
+        <li><span class="ui">취소</span>: 편집을 시작하기 전 상태로 되돌리고 나갑니다. "수정한 내용을 저장하지 않고 취소할까요?"에서 <span class="ui">수정 취소</span>를 누르면 돼요. (<span class="ui">계속 편집</span>을 누르면 계속 고칠 수 있어요.)</li>
+        <li><span class="ui">완료</span>: 편집을 마치고 읽기 화면으로 돌아갑니다.</li>
+      </ul>
+      <div class="tip"><b>사진·파일 줄</b>은 편집 화면에서 "📷 사진 [기호]", "📎 파일이름 [기호]" 같은 한 줄로 보여요. 이 줄은 한 덩어리라서 한 글자만 지워도 <b>줄 전체(사진·파일)가 지워집니다</b>. 실수로 지웠다면 <span class="ui">↶ 이전으로</span>를 누르세요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. 찾기 -->
+<section id="search">
+  <h2>7. 메모 찾기</h2>
+  <div class="step">
+    <div class="fig">
+      <div class="phone">
+        <div class="status"><span>10:30</span><span>▮▮▮</span></div>
+        <div class="appbar"><span>‹</span><span class="field" style="min-height:0;flex:1;font-weight:400;font-size:12px;padding:4px 8px">강남<span class="caret"></span></span></div>
+        <div class="screen-pad">
+          <div class="lbl">폴더</div>
+          <div class="row">📁 강남 맛집</div>
+          <div class="lbl">메모</div>
+          <div class="row" style="display:grid;gap:2px"><b>약속 장소 모음</b><span class="k">…서울시 강남구 테헤란로 123…</span></div>
+        </div>
+        <div style="height:50px"></div>
+      </div>
+      <p class="cap">이름과 내용 모두에서 찾아요</p>
+    </div>
+    <div class="text">
+      <h3>돋보기를 누르고 단어 입력</h3>
+      <p>첫 화면 오른쪽 위 <span class="ui">돋보기</span>를 누르고 찾을 말을 적으면, 그 말이 들어간 <b>폴더</b>와 <b>메모</b>가 나뉘어 나옵니다. 메모는 제목뿐 아니라 내용 속 글자도 찾아요.</p>
+      <p>결과를 누르면 그 폴더나 메모로 바로 갑니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 8. 빠른 메모 -->
+<section id="quick">
+  <h2>8. 빠른 메모</h2>
+  <p class="intro">유튜브를 보든 카톡을 하든, 갑자기 떠오른 생각이나 복사해 둔 내용을 몇 초 만에 새 메모로 남기는 기능입니다. 처음에 한 번만 켜 두면 됩니다.</p>
+  <div class="step">
+    <div class="fig">
+      <div class="phone" style="height:250px">
+        <div class="status"><span>11:00</span><span>▮▮▮</span></div>
+        <div class="appbar"><span>쏙메모</span><span class="sp"></span><span class="ico">⋮</span></div>
+        <div class="list"><div class="row">📁 가족</div><div class="row">📁 회사</div></div>
+        <div class="menu"><div class="tap">빠른 메모 켜기</div><div>백업하기</div><div>복원하기</div></div>
+      </div>
+      <p class="cap">⋮ → 빠른 메모 켜기</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">1</span>빠른 메모 켜기 (처음 한 번)</h3>
+      <p>쏙메모 첫 화면 오른쪽 위 <span class="ui">⋮</span> → <span class="ui">빠른 메모 켜기</span>를 누릅니다.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="fig">
+      <div class="phone sys" style="height:250px">
+        <div class="status"><span>11:00</span><span>▮▮▮</span></div>
+        <div class="dialog">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--app-lemon);display:grid;place-items:center;justify-self:center;font-size:15px">✎</div>
+          <div class="t" style="text-align:center">쏙메모에서 빠른 설정에 다음 타일을 추가하려고 합니다</div>
+          <div style="text-align:center;font-weight:700">쏙메모</div>
+          <div class="acts"><span>추가 안함</span><span class="tap" style="padding:0 6px">타일 추가</span></div>
+        </div>
+      </div>
+      <p class="cap">안드로이드 13 이상</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">2</span>"타일 추가" 누르기</h3>
+      <p>휴대폰이 확인창을 띄웁니다. <span class="ui">추가</span>(또는 <span class="ui">타일 추가</span>)를 누르면 끝이에요. "빠른 메모를 켰어요"가 나옵니다.</p>
+      <div class="tip"><b>확인창 대신 안내가 나오는 휴대폰</b>(안드로이드 12 이하)은 직접 넣어 주세요.<br>① 화면 맨 위에서 아래로 <b>두 번</b> 쓸어내림 → ② <span class="ui">연필(편집)</span> 버튼 → ③ 아래쪽 목록의 <b>쏙메모</b> 타일을 위로 끌어다 놓기.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="fig">
+      <div class="phone" style="background:#1F2228">
+        <div class="status" style="color:#EEE"><span>11:05</span><span>▮▮▮</span></div>
+        <div class="qs">
+          <div class="tiles">
+            <div class="tile on">Wi-Fi</div><div class="tile">블루투스</div>
+            <div class="tile">손전등</div><div class="tile ssok tap">✎ 쏙메모</div>
+          </div>
+          <div style="height:4px;background:#555;border-radius:2px"></div>
+          <div style="font-size:11px;opacity:.6">알림 2개</div>
+        </div>
+        <div style="height:90px;background:#2A2D33"></div>
+      </div>
+      <p class="cap">위에서 아래로 쓸어내린 화면</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">3</span>언제든 쓸어내리고 쏙메모 타일 누르기</h3>
+      <p>어떤 화면에서든 <b>화면 맨 위에서 아래로 쓸어내리면</b> 와이파이, 손전등 버튼이 있는 곳에 노란 <b>쏙메모</b> 타일이 있어요. 누르세요.</p>
+      <div class="tip">타일이 안 보이면 한 번 더 쓸어내려 펼치거나, 옆으로 넘겨 보세요.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="fig">
+      <div class="phone" style="background:#777">
+        <div class="status" style="color:#FFF"><span>11:05</span><span>▮▮▮</span></div>
+        <div style="height:40px"></div>
+        <div class="sheet" style="border-radius:18px 18px 0 0">
+          <div class="lbl">저장 위치: 쏙메모 › 아이디어 ▸</div>
+          <div class="field">주말에 베란다 화분 분갈이<span class="caret"></span></div>
+          <div class="btns" style="justify-content:space-between"><span class="b text">📋 붙여넣기</span><span class="b fill tap">저장</span></div>
+        </div>
+        <div class="kbd"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <p class="cap">빠른 메모 창</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">4</span>적고 <span class="ui" style="margin-left:6px">저장</span></h3>
+      <p>작은 메모 창이 뜨고 키보드가 바로 올라옵니다.</p>
+      <ul class="plain">
+        <li>적고 싶은 내용을 쓰고 <span class="ui">저장</span>을 누르면 새 메모가 만들어지고, 보던 화면으로 돌아갑니다.</li>
+        <li><span class="ui">붙여넣기</span>: 다른 곳에서 복사해 둔 글을 한 번에 넣어요.</li>
+        <li><span class="ui">저장 위치</span>: 누르면 폴더 목록이 열려 넣을 폴더를 고를 수 있어요. <b>마지막으로 고른 폴더를 기억</b>하니 매번 고를 필요는 없어요.</li>
+        <li>쓰다가 창 바깥이나 뒤로 가기를 누르면 "저장하지 않고 닫을까요?"라고 물어봅니다. 실수로 날아가지 않아요.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 9. 백업 -->
+<section id="backup">
+  <h2>9. 백업하고 복원하기</h2>
+  <p class="intro">메모는 내 휴대폰 안에만 저장됩니다. 휴대폰을 바꾸거나 잃어버릴 때를 대비해 가끔 백업 파일을 만들어 두세요.</p>
+  <div class="step">
+    <div class="fig">
+      <div class="phone" style="height:250px">
+        <div class="status"><span>12:00</span><span>▮▮▮</span></div>
+        <div class="appbar"><span>쏙메모</span><span class="sp"></span><span class="ico">⋮</span></div>
+        <div class="list"><div class="row">📁 가족</div><div class="row">📁 회사</div></div>
+        <div class="menu"><div>빠른 메모 켜기</div><div class="tap">백업하기</div><div>복원하기</div></div>
+      </div>
+      <p class="cap">⋮ → 백업하기</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">1</span>백업하기</h3>
+      <p>첫 화면 <span class="ui">⋮</span> → <span class="ui">백업하기</span>를 누르면 모든 폴더, 메모, 사진, 파일을 담은 <b>백업 파일 하나</b>가 만들어지고 공유 창이 뜹니다.</p>
+      <p>안전한 곳으로 보내 두세요. 예: <b>Google Drive</b>, <b>카톡 나와의 채팅</b>, 이메일로 나에게 보내기.</p>
+      <div class="tip">백업 파일은 <b>암호가 걸려 있지 않아요</b>. 다른 사람에게 보내지 말고 나만 볼 수 있는 곳에 두세요.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="fig">
+      <div class="phone sys" style="height:220px">
+        <div class="status"><span>12:10</span><span>▮▮▮</span></div>
+        <div class="dialog">
+          <div class="t">복원했어요</div>
+          <div style="font-size:11.5px">새 메모 12개 · 이어 붙인 메모 3개 · 사본 0개 · 사진 8장</div>
+          <div class="acts"><span>확인</span></div>
+        </div>
+      </div>
+      <p class="cap">복원이 끝나면 나오는 결과</p>
+    </div>
+    <div class="text">
+      <h3><span class="num">2</span>복원하기 (새 휴대폰에서)</h3>
+      <p>새 휴대폰에 쏙메모를 설치하고, 백업 파일을 휴대폰에 내려받아 둡니다. 그다음 <span class="ui">⋮</span> → <span class="ui">복원하기</span> → 백업 파일을 고르면 메모가 돌아옵니다.</p>
+      <p>복원은 <b>지금 있는 메모를 지우지 않고 합쳐 넣습니다</b>. 같은 메모가 이미 있으면 새로 늘어난 부분만 이어 붙여요.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <h2>자주 묻는 질문</h2>
+  <div>
+    <details><summary>공유 목록에 쏙메모가 안 보여요</summary>
+      <p>쏙메모를 설치한 뒤 한 번 열어 보세요. 그래도 없으면 공유 목록을 옆이나 아래로 끝까지 넘겨 보세요. 앱 목록이 "최근 사용" 순서라 처음엔 뒤쪽에 있을 수 있어요.</p></details>
+    <details><summary>메모가 다른 곳(서버)으로 전송되나요?</summary>
+      <p>아니요. 쏙메모는 인터넷을 쓰지 않습니다. 메모, 사진, 파일은 모두 내 휴대폰 안에만 저장돼요. 그래서 휴대폰을 바꿀 때는 꼭 백업 파일을 옮겨야 해요.</p></details>
+    <details><summary>앱을 지우면 메모는요?</summary>
+      <p>앱을 <b>삭제</b>하면 메모도 함께 사라집니다. 지우기 전에 반드시 <span class="ui">백업하기</span>를 하세요. 새 버전으로 <b>업데이트</b>(새 파일을 그 위에 설치)할 때는 메모가 그대로 남아요.</p></details>
+    <details><summary>아이폰에서도 쓸 수 있나요?</summary>
+      <p>지금은 안드로이드 휴대폰에서만 쓸 수 있어요.</p></details>
+    <details><summary>글을 붙였는데 메모 맨 아래에 붙었어요</summary>
+      <p>원래 그렇게 동작해요. 이미 있는 메모에 붙이면 항상 맨 끝에, 받은 앱과 시각 한 줄과 함께 쌓입니다. 시간 순서대로 모이는 셈이에요.</p></details>
+  </div>
+</section>
+
+<footer>
+  쏙메모 1.0.9 기준 설명서입니다. 그림은 이해를 돕기 위해 단순하게 그린 것이라 실제 화면과 모양이나 문구가 조금 다를 수 있어요.
+  다운로드 페이지: <a href="https://github.com/LeeJongYoun1/memoAppDownload">github.com/LeeJongYoun1/memoAppDownload</a>
+</footer>
+
+</div>
+</body>
+</html>
