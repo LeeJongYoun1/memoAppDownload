@@ -185,7 +185,7 @@ ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
   animation: pulse 1.6s ease-out infinite; pointer-events: none;
 }
 @keyframes pulse { from { opacity: .9; transform: scale(.96); } to { opacity: 0; transform: scale(1.12); } }
-@media (prefers-reduced-motion: reduce) { .tap::after { animation: none; opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .tap::after { animation: none; opacity: 0; } .finger { transition: none; } }
 .cap { font-size: .82rem; color: var(--sub); text-align: center; margin-top: 8px; }
 
 /* 자주 묻는 질문 */
@@ -193,6 +193,43 @@ details { border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px
 details + details { margin-top: 10px; }
 summary { cursor: pointer; font-weight: 700; }
 details p { margin-top: 8px; }
+/* ===== 움직이는 그림(동영상 가이드) ===== */
+.video { display: grid; grid-template-columns: 250px 1fr; gap: 24px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+@media (max-width: 640px) { .video { grid-template-columns: 1fr; justify-items: center; } }
+.vbox { width: 100%; max-width: 250px; display: grid; gap: 10px; }
+.stage { position: relative; height: 430px; }
+.stage .phone { height: 100%; }
+.scene { position: absolute; inset: 0; }
+.finger {
+  position: absolute; left: 0; top: 0; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%;
+  background: rgba(232, 89, 12, .35); border: 2.5px solid var(--tap); opacity: 0; pointer-events: none; z-index: 5;
+  transition: transform .7s cubic-bezier(.4,.1,.2,1), opacity .25s;
+}
+.finger.on { opacity: 1; }
+.finger.press { background: rgba(232, 89, 12, .7); box-shadow: 0 0 0 8px rgba(232, 89, 12, .2); }
+.playover {
+  position: absolute; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,.18);
+  border: 0; cursor: pointer; z-index: 6; border-radius: 26px; font: inherit;
+}
+.playover span {
+  width: 64px; height: 64px; border-radius: 50%; background: var(--accent); color: var(--accent-ink);
+  display: grid; place-items: center; font-size: 26px; box-shadow: 0 4px 14px rgba(0,0,0,.25); padding-left: 4px;
+}
+.vctl { display: flex; align-items: center; gap: 8px; }
+.vctl button {
+  border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px;
+  min-width: 40px; height: 34px; font: inherit; font-weight: 700; cursor: pointer; padding: 0 12px;
+}
+.dots { display: flex; gap: 5px; flex: 1; justify-content: center; }
+.dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+.dots i.done { background: var(--accent); }
+.vcap { font-weight: 700; min-height: 3.4em; }
+.vcap small { display: block; color: var(--sub); font-weight: 400; font-size: .85rem; }
+.vtitle { display: grid; gap: 8px; min-width: 0; }
+.vtitle .eyebrow { font-size: .8rem; letter-spacing: .08em; color: var(--sub); font-weight: 700; }
+.snack { position: absolute; left: 10px; right: 10px; bottom: 14px; background: #333; color: #FFF; border-radius: 8px; padding: 9px 12px; font-size: 12px; }
+.typing::after { content: ""; display: inline-block; width: 1.5px; height: 1.1em; background: var(--app-ink); vertical-align: -2px; margin-left: 1px; }
+
 footer { margin-top: 48px; padding-top: 18px; border-top: 2px dashed var(--line); color: var(--sub); font-size: .9rem; }
 </style>
 </head>
@@ -210,14 +247,14 @@ footer { margin-top: 48px; padding-top: 18px; border-top: 2px dashed var(--line)
     </div>
   </div>
   <nav class="toc" aria-label="차례">
-    <a href="#install">1. 설치하기</a>
+    <a href="#install">1. 설치하기 ▶</a>
     <a href="#home">2. 첫 화면</a>
     <a href="#make">3. 폴더·메모 만들기</a>
-    <a href="#share">4. 카톡에서 붙이기</a>
+    <a href="#share">4. 카톡에서 붙이기 ▶</a>
     <a href="#photo">5. 사진·파일</a>
     <a href="#edit">6. 메모 보고 고치기</a>
     <a href="#search">7. 찾기</a>
-    <a href="#quick">8. 빠른 메모</a>
+    <a href="#quick">8. 빠른 메모 ▶</a>
     <a href="#backup">9. 백업·복원</a>
     <a href="#faq">자주 묻는 질문</a>
   </nav>
@@ -227,6 +264,14 @@ footer { margin-top: 48px; padding-top: 18px; border-top: 2px dashed var(--line)
 <section id="install">
   <h2>1. 설치하기</h2>
   <p class="intro">쏙메모는 Play 스토어가 아니라 파일(APK)로 직접 설치합니다. 처음 한 번만 "허용" 설정이 필요하고, 그다음부터는 파일을 누르기만 하면 됩니다.</p>
+
+  <div class="video" data-clip="install">
+    <div class="vbox">
+      <div class="stage"></div>
+      <div class="vctl"><button type="button" class="pp" id="v-install-play" aria-label="재생">▶</button><div class="dots"></div><button type="button" class="rr" id="v-install-replay" aria-label="처음부터">↺</button></div>
+    </div>
+    <div class="vtitle"><span class="eyebrow">움직이는 그림으로 보기</span><h3>설치 과정 한눈에 보기</h3><p class="vcap" aria-live="polite"></p></div>
+  </div>
 
   <div class="step">
     <div class="fig">
@@ -454,6 +499,14 @@ footer { margin-top: 48px; padding-top: 18px; border-top: 2px dashed var(--line)
   <h2>4. 카톡에서 받은 내용 붙이기</h2>
   <p class="intro">쏙메모의 핵심 기능입니다. 쏙메모를 열 필요 없이, 카톡(또는 문자, 인터넷, 갤러리 등)에서 바로 보냅니다.</p>
 
+  <div class="video" data-clip="share">
+    <div class="vbox">
+      <div class="stage"></div>
+      <div class="vctl"><button type="button" class="pp" id="v-share-play" aria-label="재생">▶</button><div class="dots"></div><button type="button" class="rr" id="v-share-replay" aria-label="처음부터">↺</button></div>
+    </div>
+    <div class="vtitle"><span class="eyebrow">움직이는 그림으로 보기</span><h3>카톡 메시지를 메모에 붙이기</h3><p class="vcap" aria-live="polite"></p></div>
+  </div>
+
   <div class="step">
     <div class="fig">
       <div class="phone" style="background:#B2C7DA">
@@ -678,6 +731,14 @@ footer { margin-top: 48px; padding-top: 18px; border-top: 2px dashed var(--line)
 <section id="quick">
   <h2>8. 빠른 메모</h2>
   <p class="intro">유튜브를 보든 카톡을 하든, 갑자기 떠오른 생각이나 복사해 둔 내용을 몇 초 만에 새 메모로 남기는 기능입니다. 처음에 한 번만 켜 두면 됩니다.</p>
+
+  <div class="video" data-clip="quick">
+    <div class="vbox">
+      <div class="stage"></div>
+      <div class="vctl"><button type="button" class="pp" id="v-quick-play" aria-label="재생">▶</button><div class="dots"></div><button type="button" class="rr" id="v-quick-replay" aria-label="처음부터">↺</button></div>
+    </div>
+    <div class="vtitle"><span class="eyebrow">움직이는 그림으로 보기</span><h3>빠른 메모 쓰기</h3><p class="vcap" aria-live="polite"></p></div>
+  </div>
   <div class="step">
     <div class="fig">
       <div class="phone" style="height:250px">
@@ -827,5 +888,198 @@ footer { margin-top: 48px; padding-top: 18px; border-top: 2px dashed var(--line)
 </footer>
 
 </div>
+
+<script>
+(() => {
+  const st = (t) => `<div class="status"><span>${t}</span><span>▮▮▮</span></div>`;
+  const kbd = '<div class="kbd">' + '<i></i>'.repeat(20) + '</div>';
+  const appIcon = '<div style="width:52px;height:52px;border-radius:14px;background:var(--app-lemon);display:grid;place-items:center;font-family:var(--display);font-size:20px;color:var(--app-ink)">쏙</div>';
+  const chat = (extra = '') => `<div class="phone" style="background:#B2C7DA">${st('10:02')}<div class="chat">
+      <div class="kbubble">내일 3시 강남역 2번 출구에서 만나요</div>
+      <div class="kbubble tt-msg">주소: 서울시 강남구 테헤란로 123, 5층</div>
+      <div class="kbubble me">넵 알겠습니다</div></div>${extra}</div>`;
+  const youtube = (extra = '') => `<div class="phone" style="background:#111;color:#EEE">${st('11:05')}
+      <div style="height:130px;background:linear-gradient(135deg,#334,#556 60%,#223)"></div>
+      <div class="screen-pad" style="color:#EEE"><b>주말 베란다 정원 가꾸기</b><span style="opacity:.6;font-size:11px">조회수 1.2만회</span></div>${extra}</div>`;
+
+  // 장면: html, cap(설명), sub(보충), tap(누를 곳), long(꾹 누르기), swipe(쓸어내리기), type(글자 입력), dur(멈춤 시간)
+  const CLIPS = {
+    install: [
+      { cap: '다운로드 페이지에서 내려받기 링크를 눌러요', tap: '.tt',
+        html: `<div class="phone sys">${st('9:30')}<div class="screen-pad" style="background:#FFF">
+          <div style="font-weight:700;font-size:14px">쏙메모 다운로드</div>
+          <div style="font-size:11.5px;opacity:.8">카톡 등 메신저에서 받은 메시지·사진을 공유 → 쏙메모로…</div>
+          <div style="font-weight:700">최신 버전: 1.0.9</div>
+          <div class="tt" style="color:var(--sys-blue);font-weight:700">ssokmemo-1.0.9.apk 내려받기</div>
+          <div style="font-size:11px;opacity:.7">(모든 휴대폰용, 약 33MB)</div></div></div>` },
+      { cap: '다운로드가 끝나면 "열기"를 눌러요', tap: '.tt',
+        html: `<div class="phone sys">${st('9:31')}<div class="notif"><div style="font-size:11px;opacity:.7">Chrome · 방금</div>
+          <div style="font-weight:700">ssokmemo-1.0.9.apk</div><div style="font-size:11.5px">다운로드 완료</div>
+          <div style="display:flex;justify-content:flex-end"><span class="tt" style="color:var(--sys-blue);font-weight:700;padding:2px 8px">열기</span></div></div></div>` },
+      { cap: '"자동 차단"으로 막히면 "설정"을 눌러요', sub: '갤럭시에서만 나올 수 있어요', tap: '.tt',
+        html: `<div class="phone sys">${st('9:31')}<div class="dialog"><div class="t">보안 위험 자동 차단에 의해 설치가 차단됨</div>
+          <div style="font-size:11.5px">승인되지 않은 출처의 앱 설치를 막고 있어요.</div>
+          <div class="acts"><span>확인</span><span class="tt" style="padding:0 6px">설정</span></div></div></div>` },
+      { cap: '스위치를 눌러 끄고, 뒤로 가요', sub: '설치가 끝나면 다시 켜 두세요', tap: '.tt',
+        html: `<div class="phone sys">${st('9:31')}<div class="screen-pad"><div style="font-size:11px;opacity:.7">‹ 보안 및 개인정보 보호</div>
+          <div style="font-weight:700;font-size:14px">보안 위험 자동 차단</div>
+          <div class="toggle"><span>사용 중</span><span class="sw tt"></span></div></div></div>` },
+      { cap: '"이 출처 허용"을 켜고, 뒤로 가요', sub: '처음 한 번만 나와요', tap: '.tt',
+        html: `<div class="phone sys">${st('9:32')}<div class="screen-pad"><div style="font-weight:700;font-size:14px">출처를 알 수 없는 앱 설치</div>
+          <div class="toggle"><span>이 출처 허용</span><span class="sw tt" style="background:#BBB"></span></div></div></div>` },
+      { cap: '"설치"를 눌러요', tap: '.tt',
+        html: `<div class="phone sys">${st('9:32')}<div class="dialog" style="margin-top:120px">${appIcon}<div class="t">쏙메모</div>
+          <div style="font-size:11.5px">이 앱을 설치하시겠습니까?</div>
+          <div class="acts"><span>취소</span><span class="tt" style="padding:0 6px">설치</span></div></div></div>` },
+      { cap: '설치 끝! "열기"를 누르면 시작돼요', tap: '.tt',
+        html: `<div class="phone sys">${st('9:33')}<div class="screen-pad" style="justify-items:center;padding-top:60px">${appIcon}
+          <div style="font-weight:700">쏙메모</div><div style="font-size:11.5px">앱이 설치되었습니다.</div>
+          <div style="display:flex;gap:30px;margin-top:20px;font-weight:700;color:var(--sys-blue)"><span>완료</span><span class="tt" style="padding:0 6px">열기</span></div></div></div>` },
+    ],
+    share: [
+      { cap: '붙이고 싶은 메시지를 손가락으로 꾹 눌러요', tap: '.tt-msg', long: true, html: chat() },
+      { cap: '메뉴에서 "공유"를 눌러요', sub: '카톡 버전에 따라 메뉴 모양이 다를 수 있어요', tap: '.tt',
+        html: chat(`<div class="kmenu"><div>답장</div><div>복사</div><div>전달</div><div class="tt" style="font-weight:700">공유</div><div>나에게</div><div>삭제</div></div>`) },
+      { cap: '앱 목록에서 "쏙메모"를 눌러요', tap: '.tt',
+        html: `<div class="phone sys" style="display:grid;grid-template-rows:auto 1fr auto">${st('10:02')}<div style="background:rgba(0,0,0,.3)"></div>
+          <div class="chooser"><div style="font-weight:700">공유</div><div class="apps">
+          <div><div class="ic" style="background:#FEE500;color:#3B1E1E">톡</div>카카오톡</div>
+          <div><div class="ic" style="background:#4C8BF5">M</div>메시지</div>
+          <div class="tt"><div class="ic" style="background:var(--app-lemon);color:var(--app-ink);font-family:var(--display)">쏙</div><b>쏙메모</b></div>
+          <div><div class="ic" style="background:#34A853">D</div>Drive</div></div></div></div>` },
+      { cap: '붙일 메모를 눌러요', sub: '새 메모로 만들려면 "+ 새 메모"', tap: '.tt',
+        html: `<div class="phone" style="background:#888;display:grid;grid-template-rows:auto 1fr auto">${st('10:02')}<div></div>
+          <div class="sheet"><div class="grab"></div><div class="lbl">붙여넣을 내용</div>
+          <div class="bubble">주소: 서울시 강남구 테헤란로 123, 5층</div>
+          <div class="lbl">폴더</div><div class="panel"><div class="tree">🏠 쏙메모 (최상위)</div>
+          <div class="tree" style="padding-left:16px">▾ 가족</div><div class="tree tt" style="padding-left:30px">📝 약속 장소 모음</div>
+          <div class="tree" style="padding-left:16px">▸ 회사</div></div>
+          <div class="lbl">만들 위치: 쏙메모</div><div class="btns"><span class="b">+ 새 폴더</span><span class="b fill">+ 새 메모</span></div></div></div>` },
+      { cap: '붙은 모습을 확인하고 "완료"를 눌러요', sub: '받은 앱과 시각이 자동으로 적혀요', tap: '.tt',
+        html: `<div class="phone" style="background:#888;display:grid;grid-template-rows:auto 1fr auto">${st('10:03')}<div></div>
+          <div class="sheet"><div class="grab"></div><div style="font-weight:700;font-size:14px">약속 장소 모음</div>
+          <div class="stamp">(카카오톡) 26/10/28 18:20<br>홍대입구역 9번 출구</div>
+          <div class="stamp" style="font-weight:700;margin-top:6px">(카카오톡) 26/11/04 10:03</div>
+          <div class="field">주소: 서울시 강남구 테헤란로 123, 5층</div>
+          <div class="btns"><span class="b text">되돌리기</span><span class="b fill tt">완료</span></div></div></div>` },
+      { cap: '카톡 화면으로 그대로 돌아와요. 끝!', dur: 2200, html: chat() },
+    ],
+    quick: [
+      { cap: '어느 화면에서든 맨 위에서 아래로 쓸어내려요', swipe: true, html: youtube() },
+      { cap: '연필 모양 "쏙메모" 타일을 눌러요', tap: '.tt',
+        html: `<div class="phone" style="background:#1F2228">${st('11:05')}<div class="qs"><div class="rtiles">
+          <div><span class="rt on">W</span>Wi-Fi</div><div><span class="rt">B</span>블루투스</div>
+          <div><span class="rt">☼</span>손전등</div><div class="tt"><span class="rt">✎</span>쏙메모</div></div>
+          <div style="height:4px;background:#555;border-radius:2px"></div></div><div style="height:240px;background:#2A2D33"></div></div>` },
+      { cap: '메모 창이 뜨면 바로 적어요', type: '주말에 베란다 화분 분갈이',
+        html: `<div class="phone" style="background:#777;display:grid;grid-template-rows:auto 1fr auto auto">${st('11:05')}<div></div>
+          <div class="sheet"><div class="lbl">저장 위치: 쏙메모 › 아이디어 ▸</div><div class="field"><span class="typing"></span></div>
+          <div class="btns" style="justify-content:space-between"><span class="b text">📋 붙여넣기</span><span class="b fill">저장</span></div></div>${kbd}</div>` },
+      { cap: '"저장"을 눌러요', tap: '.tt',
+        html: `<div class="phone" style="background:#777;display:grid;grid-template-rows:auto 1fr auto auto">${st('11:06')}<div></div>
+          <div class="sheet"><div class="lbl">저장 위치: 쏙메모 › 아이디어 ▸</div><div class="field">주말에 베란다 화분 분갈이</div>
+          <div class="btns" style="justify-content:space-between"><span class="b text">📋 붙여넣기</span><span class="b fill tt">저장</span></div></div>${kbd}</div>` },
+      { cap: '"저장했어요"가 뜨고 보던 화면으로 돌아와요', sub: '메모는 "아이디어" 폴더에 들어갔어요', dur: 2400,
+        html: youtube('<div class="snack">저장했어요</div>') },
+    ],
+  };
+
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  document.querySelectorAll('.video').forEach((box) => {
+    const scenes = CLIPS[box.dataset.clip];
+    const stage = box.querySelector('.stage');
+    const cap = box.querySelector('.vcap');
+    const pp = box.querySelector('.pp');
+    const rr = box.querySelector('.rr');
+    const dots = box.querySelector('.dots');
+    dots.innerHTML = scenes.map(() => '<i></i>').join('');
+    const finger = document.createElement('div');
+    finger.className = 'finger';
+    let i = 0, playing = false, run = 0;
+
+    const show = (k) => {
+      const sc = scenes[k];
+      stage.innerHTML = `<div class="scene">${sc.html}</div>`;
+      stage.appendChild(finger);
+      finger.className = 'finger';
+      cap.innerHTML = `${k + 1}/${scenes.length} · ${sc.cap}${sc.sub ? `<small>${sc.sub}</small>` : ''}`;
+      [...dots.children].forEach((d, n) => d.classList.toggle('done', n <= k));
+    };
+    const at = (x, y, instant) => {
+      if (instant) finger.style.transition = 'none';
+      finger.style.transform = `translate(${x}px, ${y}px)`;
+      if (instant) { void finger.offsetWidth; finger.style.transition = ''; }
+    };
+    const center = (el) => {
+      const a = stage.getBoundingClientRect(), b = el.getBoundingClientRect();
+      return [b.left - a.left + b.width / 2, b.top - a.top + b.height / 2];
+    };
+    const overlay = (again) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'playover';
+      b.setAttribute('aria-label', again ? '다시 보기' : '재생');
+      b.innerHTML = `<span>${again ? '↺' : '▶'}</span>`;
+      b.onclick = () => (again ? restart() : play());
+      stage.appendChild(b);
+    };
+    const setBtn = (on) => {
+      pp.textContent = on ? '❚❚' : '▶';
+      pp.setAttribute('aria-label', on ? '일시정지' : '재생');
+    };
+
+    async function scene(k, my) {
+      const sc = scenes[k];
+      show(k);
+      const W = stage.clientWidth, H = stage.clientHeight;
+      at(W * 0.75, H * 0.85, true);
+      await wait(700); if (my !== run) return;
+      if (sc.swipe) {
+        at(W / 2, 14, true); finger.classList.add('on', 'press');
+        await wait(150); at(W / 2, H * 0.55);
+        await wait(900); finger.classList.remove('on', 'press');
+        await wait(400); return;
+      }
+      if (sc.type) {
+        const el = stage.querySelector('.typing');
+        for (const ch of sc.type) { el.textContent += ch; await wait(110); if (my !== run) return; }
+        await wait(700); return;
+      }
+      if (sc.tap) {
+        const el = stage.querySelector(sc.tap);
+        finger.classList.add('on');
+        at(...center(el));
+        await wait(850); if (my !== run) return;
+        finger.classList.add('press');
+        await wait(sc.long ? 1100 : 280);
+        finger.classList.remove('press');
+        await wait(450); return;
+      }
+      await wait(sc.dur || 1800);
+    }
+
+    async function play() {
+      if (playing) return;
+      playing = true; setBtn(true);
+      const my = ++run;
+      for (; i < scenes.length; i++) {
+        await scene(i, my);
+        if (my !== run) return;
+      }
+      playing = false; i = 0; setBtn(false);
+      overlay(true);
+    }
+    function pause() {
+      run++; playing = false; setBtn(false);
+      show(i); overlay(false);
+    }
+    function restart() { run++; playing = false; i = 0; play(); }
+
+    pp.onclick = () => (playing ? pause() : play());
+    rr.onclick = restart;
+    show(0); overlay(false);
+  });
+})();
+</script>
 </body>
 </html>
