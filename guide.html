@@ -172,6 +172,10 @@ ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
 .tile { background: #3A3F48; border-radius: 14px; padding: 9px 10px; font-size: 11.5px; display: flex; gap: 6px; align-items: center; }
 .tile.on { background: #A8C7FA; color: #062E6F; }
 .tile.ssok { background: var(--app-lemon); color: var(--app-ink); font-weight: 700; }
+.rtiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px 4px; text-align: center; font-size: 10.5px; padding: 6px 0; }
+.rtiles > div { display: grid; justify-items: center; gap: 4px; padding: 3px 0; }
+.rt { width: 38px; height: 38px; border-radius: 50%; background: #4A4F58; color: #E6E6E6; display: grid; place-items: center; font-size: 15px; font-weight: 700; }
+.rt.on { background: #3E7BFA; color: #FFF; }
 .notif { margin: 10px; background: #FFF; border-radius: 14px; padding: 10px; display: grid; gap: 4px; color: var(--sys-ink); }
 
 /* 누르는 곳 표시 */
@@ -713,9 +717,11 @@ footer { margin-top: 48px; padding-top: 18px; border-top: 2px dashed var(--line)
       <div class="phone" style="background:#1F2228">
         <div class="status" style="color:#EEE"><span>11:05</span><span>▮▮▮</span></div>
         <div class="qs">
-          <div class="tiles">
-            <div class="tile on">Wi-Fi</div><div class="tile">블루투스</div>
-            <div class="tile">손전등</div><div class="tile ssok tap">✎ 쏙메모</div>
+          <div class="rtiles">
+            <div><span class="rt on">W</span>Wi-Fi</div>
+            <div><span class="rt">B</span>블루투스</div>
+            <div><span class="rt">☼</span>손전등</div>
+            <div class="tap"><span class="rt">✎</span>쏙메모</div>
           </div>
           <div style="height:4px;background:#555;border-radius:2px"></div>
           <div style="font-size:11px;opacity:.6">알림 2개</div>
@@ -726,7 +732,7 @@ footer { margin-top: 48px; padding-top: 18px; border-top: 2px dashed var(--line)
     </div>
     <div class="text">
       <h3><span class="num">3</span>언제든 쓸어내리고 쏙메모 타일 누르기</h3>
-      <p>어떤 화면에서든 <b>화면 맨 위에서 아래로 쓸어내리면</b> 와이파이, 손전등 버튼이 있는 곳에 노란 <b>쏙메모</b> 타일이 있어요. 누르세요.</p>
+      <p>어떤 화면에서든 <b>화면 맨 위에서 아래로 쓸어내리면</b> 와이파이, 손전등 버튼이 있는 곳에 <b>동그란 회색 원 안에 연필 모양</b>, 아래에 <b>쏙메모</b>라고 적힌 타일이 있어요. 누르세요.</p>
       <div class="tip">타일이 안 보이면 한 번 더 쓸어내려 펼치거나, 옆으로 넘겨 보세요.</div>
     </div>
   </div>
