@@ -7,7 +7,7 @@
 **[ssokmemo-1.0.9.apk 내려받기](https://github.com/LeeJongYoun1/memoAppDownload/raw/main/ssokmemo-1.0.9.apk)** (모든 휴대폰용, 약 33MB)
 
 처음 쓰신다면 그림 설명서를 먼저 보세요.
-- **[쏙메모 설치 방법](https://leejongyoun1.github.io/memoAppDownload/install.html)** (처음 설치, 새 버전으로 바꾸기)
+- **[쏙메모 설치/업데이트 방법](https://leejongyoun1.github.io/memoAppDownload/install.html)** (처음 설치, 새 버전으로 바꾸기)
 - **[쏙메모 사용 설명서](https://leejongyoun1.github.io/memoAppDownload/guide.html)** (카톡 글 모으기, 빠른 메모, 백업 등)
 
 **바뀐 점**
@@ -21,7 +21,7 @@
    - 확인창이 안 뜨는 휴대폰(안드로이드 12 이하)은 화면 위에서 아래로 두 번 쓸어내림 → 연필(편집) 버튼 → **쏙메모** 타일을 위로 끌어다 놓습니다.
 3. 이제 어느 앱에서든 화면 위를 쓸어내리고 **쏙메모** 타일을 누르면 메모 창이 뜹니다.
 
-## 설치 방법
+## 설치/업데이트 방법
 1. 위 링크를 눌러 APK 파일을 내려받습니다. (카톡에서 링크를 열었다면 ⋮ → **다른 브라우저로 열기**)
 2. 내려받은 파일을 누릅니다.
 3. "출처를 알 수 없는 앱" 안내가 나오면 **설정 → 이 출처 허용**을 켭니다 (Chrome 또는 내 파일 앱).
