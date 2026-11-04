@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>쏙메모 설치 방법</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: 한 줄 기둥(본문 약 40em) + 각 단계는 "그림 | 설명" 2열, 폰 폭에서는 1열로 쌓임 */
+:root {
+  --bg: #FFFDF4;
+  --fg: #3B3220;
+  --sub: #6F6340;
+  --line: #EEDFA6;
+  --panel: #FFF6D2;
+  --accent: #F2BE00;
+  --accent-ink: #3B3220;
+  --link: #8A5A00;
+  --tap: #E8590C;
+  /* 그림 속 앱 화면(앱 자체 색 그대로, 테마와 무관) */
+  --app-cream: #FFFBEA;
+  --app-lemon: #FFD43B;
+  --app-lemon-light: #FFE58A;
+  --app-selected: #FFF1B8;
+  --app-ink: #3B3220;
+  --app-sub: #7A6A2E;
+  --app-card: #FFFFFF;
+  --frame: #2B2618;
+  --sys-bg: #F2F2F5;
+  --sys-ink: #1E1E22;
+  --sys-blue: #2F6BFF;
+  --display: "Jua", "Noto Sans KR", system-ui, sans-serif;
+  --body: "Noto Sans KR", system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1C1A14; --fg: #F3ECD6; --sub: #C2B78F; --line: #3D3826; --panel: #27241A;
+    --accent: #FFD43B; --accent-ink: #2A2414; --link: #FFD95C; --tap: #FF8A4C; --frame: #0E0D09;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1C1A14; --fg: #F3ECD6; --sub: #C2B78F; --line: #3D3826; --panel: #27241A;
+  --accent: #FFD43B; --accent-ink: #2A2414; --link: #FFD95C; --tap: #FF8A4C; --frame: #0E0D09;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--body);
+  font-size: 17px; line-height: 1.75; word-break: keep-all; overflow-wrap: anywhere;
+}
+.wrap {
+  max-width: 920px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+}
+h1, h2, h3 { font-family: var(--display); font-weight: 400; text-wrap: balance; line-height: 1.3; margin: 0; }
+h1 { font-size: clamp(2.2rem, 7vw, 3.2rem); }
+h2 { font-size: clamp(1.6rem, 4.6vw, 2.1rem); }
+h3 { font-size: 1.25rem; }
+p { margin: 0; }
+a { color: var(--link); font-weight: 700; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--tap); outline-offset: 2px; }
+b, strong { font-weight: 700; }
+.ui { /* 화면에 보이는 버튼·메뉴 이름 */
+  display: inline-block; padding: 0 .45em; border-radius: 6px; font-weight: 700;
+  background: var(--panel); border: 1px solid var(--line); line-height: 1.5; white-space: nowrap;
+}
+
+/* 머리 */
+header.hero { display: grid; gap: 16px; padding-bottom: 28px; border-bottom: 2px dashed var(--line); }
+.hero .lead { font-size: 1.1rem; color: var(--sub); max-width: 36em; }
+.hero-row { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; }
+.hero-row > div { flex: 1 1 300px; min-width: 0; display: grid; gap: 14px; }
+.dl {
+  display: inline-flex; align-items: center; gap: 10px; justify-self: start;
+  background: var(--accent); color: var(--accent-ink); text-decoration: none;
+  font-family: var(--display); font-size: 1.25rem; padding: 12px 22px; border-radius: 14px;
+  box-shadow: 0 3px 0 #C99A00;
+}
+.url { font-size: .82rem; color: var(--sub); word-break: break-all; }
+.toc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.toc a {
+  font-weight: 500; font-size: .92rem; text-decoration: none; color: var(--fg);
+  border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; background: var(--panel);
+}
+
+/* 섹션과 단계 */
+section { padding-block: 44px 8px; display: grid; gap: 20px; scroll-margin-top: 12px; }
+.intro { color: var(--sub); max-width: 40em; }
+.step { display: grid; grid-template-columns: 250px 1fr; gap: 24px; align-items: start; padding-block: 18px; border-top: 1px solid var(--line); }
+.step:first-of-type { border-top: 0; }
+.step .text { min-width: 0; display: grid; gap: 10px; }
+.num {
+  font-family: var(--display); font-size: 1rem; color: var(--accent-ink); background: var(--accent);
+  width: 2em; height: 2em; border-radius: 50%; display: inline-grid; place-items: center; margin-right: 8px;
+}
+.step h3 { display: flex; align-items: center; }
+.tip {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+  padding: 10px 14px; font-size: .95rem;
+}
+.tip b { color: var(--link); }
+ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
+@media (max-width: 640px) {
+  .step { grid-template-columns: 1fr; gap: 14px; }
+  .step .fig { justify-self: center; }
+}
+
+/* ===== 그림: 휴대폰 화면 ===== */
+.fig { width: 100%; max-width: 250px; }
+.phone {
+  width: 100%; border: 7px solid var(--frame); border-radius: 26px; overflow: hidden;
+  background: var(--app-cream); color: var(--app-ink); font-family: var(--body);
+  font-size: 12.5px; line-height: 1.45; position: relative; box-shadow: 0 6px 18px rgba(0,0,0,.15);
+}
+.phone.sys { background: var(--sys-bg); color: var(--sys-ink); }
+.status { height: 18px; font-size: 10px; display: flex; justify-content: space-between; padding: 2px 12px 0; opacity: .7; }
+.appbar { display: flex; align-items: center; gap: 8px; padding: 6px 12px 8px; font-size: 15px; font-weight: 700; }
+.appbar .sp { flex: 1; }
+.appbar .ico { font-weight: 700; font-size: 15px; opacity: .85; display: inline-flex; }
+.list { display: grid; gap: 6px; padding: 4px 10px 12px; }
+.row { background: var(--app-card); border-radius: 10px; padding: 8px 10px; display: flex; gap: 8px; align-items: center; }
+.row .k { opacity: .65; font-size: 11px; }
+.fab {
+  position: absolute; right: 12px; bottom: 12px; width: 38px; height: 38px; border-radius: 12px;
+  background: var(--app-lemon); display: grid; place-items: center; font-size: 22px; font-weight: 700;
+}
+.screen-pad { padding: 8px 12px 12px; display: grid; gap: 8px; }
+.dim { background: rgba(0,0,0,.35); height: 60px; }
+.sheet { background: var(--app-cream); border-radius: 18px 18px 0 0; padding: 6px 12px 12px; display: grid; gap: 7px; }
+.grab { width: 30px; height: 3px; border-radius: 2px; background: #E8D9A0; justify-self: center; }
+.lbl { color: var(--app-sub); font-size: 11px; }
+.bubble { background: var(--app-lemon-light); border-radius: 4px 12px 12px 12px; padding: 7px 9px; box-shadow: 0 2px 0 #E9C94A; }
+.panel { background: rgba(255,212,59,.13); border-radius: 12px; padding: 5px; display: grid; gap: 4px; }
+.mini { background: var(--app-card); border-radius: 8px; padding: 6px 8px; }
+.tree { padding: 3px 6px; }
+.tree.sel { background: var(--app-selected); border-radius: 6px; }
+.btns { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; }
+.b { border-radius: 999px; padding: 4px 10px; font-weight: 700; font-size: 11.5px; border: 1.5px solid var(--app-ink); }
+.b.fill { background: var(--app-lemon); border-color: var(--app-lemon); }
+.b.text { border-color: transparent; }
+.stamp { color: var(--app-sub); font-size: 11.5px; }
+.field { background: var(--app-card); border: 1.5px solid var(--app-lemon); border-radius: 10px; padding: 7px 9px; min-height: 52px; }
+.caret { display: inline-block; width: 1.5px; height: 1.1em; background: var(--app-ink); vertical-align: -2px; }
+.kbd { background: #D9D6CC; height: 64px; display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; padding: 6px; }
+.kbd i { background: #FFF; border-radius: 3px; }
+.photo { height: 70px; border-radius: 8px; background: linear-gradient(135deg, #9BC4E8, #F7D58C 60%, #E7A86B); }
+.filetile { background: var(--app-lemon-light); border-radius: 10px; padding: 7px 9px; display: flex; gap: 6px; align-items: center; font-weight: 500; }
+.menu { position: absolute; right: 8px; top: 40px; background: #FFF; border-radius: 10px; box-shadow: 0 4px 14px rgba(0,0,0,.2); padding: 4px 0; min-width: 120px; }
+.menu div { padding: 7px 14px; }
+.dialog { margin: 18px 14px; background: #FFF; color: var(--sys-ink); border-radius: 16px; padding: 14px; display: grid; gap: 10px; box-shadow: 0 6px 20px rgba(0,0,0,.2); }
+.dialog .t { font-weight: 700; font-size: 13.5px; }
+.dialog .acts { display: flex; justify-content: flex-end; gap: 14px; color: var(--sys-blue); font-weight: 700; }
+.toggle { display: flex; justify-content: space-between; align-items: center; background: #FFF; border-radius: 12px; padding: 10px 12px; }
+.sw { width: 34px; height: 20px; border-radius: 999px; background: var(--sys-blue); position: relative; }
+.sw::after { content: ""; position: absolute; right: 2px; top: 2px; width: 16px; height: 16px; border-radius: 50%; background: #FFF; }
+.chat { background: #B2C7DA; padding: 10px; display: grid; gap: 8px; }
+.kbubble { background: #FFF; border-radius: 4px 12px 12px 12px; padding: 7px 9px; max-width: 80%; color: #222; }
+.kbubble.me { background: #FEE500; justify-self: end; border-radius: 12px 4px 12px 12px; }
+.kmenu { background: #FFF; border-radius: 12px; margin: 0 10px 10px; color: #222; display: grid; grid-template-columns: 1fr 1fr 1fr; text-align: center; font-size: 11.5px; overflow: hidden; }
+.kmenu div { padding: 9px 4px; border: .5px solid #EEE; }
+.chooser { background: #FFF; color: var(--sys-ink); border-radius: 16px 16px 0 0; padding: 12px; display: grid; gap: 10px; }
+.apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; font-size: 10.5px; }
+.apps .ic { width: 34px; height: 34px; border-radius: 10px; margin: 0 auto 3px; display: grid; place-items: center; font-weight: 700; color: #FFF; font-size: 13px; }
+.qs { background: #1F2228; color: #EEE; padding: 10px; display: grid; gap: 8px; }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.tile { background: #3A3F48; border-radius: 14px; padding: 9px 10px; font-size: 11.5px; display: flex; gap: 6px; align-items: center; }
+.tile.on { background: #A8C7FA; color: #062E6F; }
+.tile.ssok { background: var(--app-lemon); color: var(--app-ink); font-weight: 700; }
+.rtiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px 4px; text-align: center; font-size: 10.5px; padding: 6px 0; }
+.rtiles > div { display: grid; justify-items: center; gap: 4px; padding: 3px 0; }
+.rt { width: 38px; height: 38px; border-radius: 50%; background: #4A4F58; color: #E6E6E6; display: grid; place-items: center; font-size: 15px; font-weight: 700; }
+.rt.on { background: #3E7BFA; color: #FFF; }
+.notif { margin: 10px; background: #FFF; border-radius: 14px; padding: 10px; display: grid; gap: 4px; color: var(--sys-ink); }
+
+/* 누르는 곳 표시 */
+.tap { position: relative; outline: 2.5px solid var(--tap); outline-offset: 2px; border-radius: 8px; }
+.tap::after {
+  content: ""; position: absolute; inset: -7px; border-radius: 12px; border: 2px solid var(--tap);
+  animation: pulse 1.6s ease-out infinite; pointer-events: none;
+}
+@keyframes pulse { from { opacity: .9; transform: scale(.96); } to { opacity: 0; transform: scale(1.12); } }
+@media (prefers-reduced-motion: reduce) { .tap::after { animation: none; opacity: 0; } .finger { transition: none; } }
+.cap { font-size: .82rem; color: var(--sub); text-align: center; margin-top: 8px; }
+
+/* 자주 묻는 질문 */
+details { border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; background: var(--panel); }
+details + details { margin-top: 10px; }
+summary { cursor: pointer; font-weight: 700; }
+details p { margin-top: 8px; }
+/* ===== 움직이는 그림(동영상 가이드) ===== */
+.video { display: grid; grid-template-columns: 250px 1fr; gap: 24px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+@media (max-width: 640px) { .video { grid-template-columns: 1fr; justify-items: center; } }
+.vbox { width: 100%; max-width: 250px; display: grid; gap: 10px; }
+.stage { position: relative; height: 430px; }
+.stage .phone { height: 100%; }
+.scene { position: absolute; inset: 0; }
+.finger {
+  position: absolute; left: 0; top: 0; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%;
+  background: rgba(232, 89, 12, .35); border: 2.5px solid var(--tap); opacity: 0; pointer-events: none; z-index: 5;
+  transition: transform .7s cubic-bezier(.4,.1,.2,1), opacity .25s;
+}
+.finger.on { opacity: 1; }
+.finger.press { background: rgba(232, 89, 12, .7); box-shadow: 0 0 0 8px rgba(232, 89, 12, .2); }
+.playover {
+  position: absolute; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,.18);
+  border: 0; cursor: pointer; z-index: 6; border-radius: 26px; font: inherit;
+}
+.playover span {
+  width: 64px; height: 64px; border-radius: 50%; background: var(--accent); color: var(--accent-ink);
+  display: grid; place-items: center; font-size: 26px; box-shadow: 0 4px 14px rgba(0,0,0,.25); padding-left: 4px;
+}
+.vctl { display: flex; align-items: center; gap: 8px; }
+.vctl button {
+  border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 999px;
+  min-width: 40px; height: 34px; font: inherit; font-weight: 700; cursor: pointer; padding: 0 12px;
+}
+.dots { display: flex; gap: 5px; flex: 1; justify-content: center; }
+.dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+.dots i.done { background: var(--accent); }
+.vcap { font-weight: 700; min-height: 3.4em; }
+.vcap small { display: block; color: var(--sub); font-weight: 400; font-size: .85rem; }
+.vtitle { display: grid; gap: 8px; min-width: 0; }
+.vtitle .eyebrow { font-size: .8rem; letter-spacing: .08em; color: var(--sub); font-weight: 700; }
+.snack { position: absolute; left: 10px; right: 10px; bottom: 14px; background: #333; color: #FFF; border-radius: 8px; padding: 9px 12px; font-size: 12px; }
+.typing::after { content: ""; display: inline-block; width: 1.5px; height: 1.1em; background: var(--app-ink); vertical-align: -2px; margin-left: 1px; }
+
+footer { margin-top: 48px; padding-top: 18px; border-top: 2px dashed var(--line); color: var(--sub); font-size: .9rem; }
+
+/* 어르신용: 큰 글씨, 넓은 줄 간격, 큰 버튼 */
+body { font-size: 20px; line-height: 1.85; }
+h2 { font-size: clamp(1.8rem, 5.4vw, 2.3rem); }
+h3 { font-size: 1.35rem; }
+.hero { gap: 18px; }
+.lead { font-size: 1.25rem !important; color: var(--fg) !important; }
+.help { background: var(--panel); border: 2px solid var(--accent); border-radius: 14px; padding: 14px 16px; }
+.dl { font-size: 1.6rem; padding: 18px 30px; border-radius: 16px; }
+.url { font-size: 1rem; }
+.toc { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+.toc a { font-size: 1.1rem; padding: 10px 16px; border-radius: 14px; text-align: left; }
+.intro { font-size: 1.1rem; color: var(--fg); }
+.step { grid-template-columns: 230px 1fr; }
+.step .text { gap: 12px; }
+.num { font-size: 1.15rem; }
+.tip { font-size: 1.05rem; }
+.small { font-size: .95rem; color: var(--sub); }
+ol.big { margin: 0; padding-left: 1.4em; display: grid; gap: 8px; }
+.vcap { font-size: 1.2rem; }
+.vcap small { font-size: 1rem; }
+.vctl button { min-width: 56px; height: 50px; font-size: 1.2rem; }
+.playover span { width: 80px; height: 80px; font-size: 32px; }
+summary { font-size: 1.1rem; padding: 4px 0; }
+@media (max-width: 640px) { .step { grid-template-columns: 1fr; } }
+
+/* 어르신용: 큰 글씨, 넓은 줄 간격, 큰 버튼 */
+body { font-size: 20px; line-height: 1.85; }
+h2 { font-size: clamp(1.8rem, 5.4vw, 2.3rem); }
+h3 { font-size: 1.35rem; }
+.hero { gap: 18px; }
+.lead { font-size: 1.25rem !important; color: var(--fg) !important; }
+.help { background: var(--panel); border: 2px solid var(--accent); border-radius: 14px; padding: 14px 16px; }
+.dl { font-size: 1.6rem; padding: 18px 30px; border-radius: 16px; }
+.url { font-size: 1rem; }
+.toc { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+.toc a { font-size: 1.1rem; padding: 10px 16px; border-radius: 14px; text-align: left; }
+.intro { font-size: 1.1rem; color: var(--fg); }
+.step { grid-template-columns: 230px 1fr; }
+.step .text { gap: 12px; }
+.num { font-size: 1.15rem; }
+.tip { font-size: 1.05rem; }
+.small { font-size: .95rem; color: var(--sub); }
+ol.big { margin: 0; padding-left: 1.4em; display: grid; gap: 8px; }
+.vcap { font-size: 1.2rem; }
+.vcap small { font-size: 1rem; }
+.vctl button { min-width: 56px; height: 50px; font-size: 1.2rem; }
+.playover span { width: 80px; height: 80px; font-size: 32px; }
+summary { font-size: 1.1rem; padding: 4px 0; }
+@media (max-width: 640px) { .step { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+<header class="hero">
+  <h1>쏙메모 설치 방법</h1>
+  <p class="lead">쏙메모를 휴대폰에 <b>처음 설치</b>하거나 <b>새 버전으로 바꿀 때</b> 보세요.</p>
+  <div class="help">조금 어려워요. 어려우면 자녀나 손주에게 부탁하세요. <b>한 번만</b> 하면 됩니다.</div>
+  <a class="dl" href="https://github.com/LeeJongYoun1/memoAppDownload/raw/main/ssokmemo-1.0.9.apk">쏙메모 내려받기</a>
+  <p class="url">갤럭시 같은 안드로이드 휴대폰에서만 쓸 수 있어요. (아이폰은 안 돼요)</p>
+  <p class="url">설치가 끝났으면 → <a href="https://leejongyoun1.github.io/memoAppDownload/guide.html">쏙메모 사용 설명서</a></p>
+</header>
+<!-- 1. 설치 -->
+<section id="install">
+  <h2>설치/업데이트 하는 순서</h2>
+  <p class="intro">처음 한 번만 하면 됩니다. 새 버전이 나와도 똑같이 하면 되고, <b>적어 둔 메모는 그대로 남아요.</b></p>
+
+  <div class="video" data-clip="install">
+    <div class="vbox">
+      <div class="stage"></div>
+      <div class="vctl"><button type="button" class="pp" id="v-install-play" aria-label="재생">▶</button><div class="dots"></div><button type="button" class="rr" id="v-install-replay" aria-label="처음부터">↺</button></div>
+    </div>
+    <div class="vtitle"><span class="eyebrow">움직이는 그림 (갤럭시 기준)</span><h3>설치하는 순서</h3><p class="vcap" aria-live="polite"></p></div>
+  </div>
+
+  <div class="step">
+    <div class="fig">
+      <div class="phone sys">
+        <div class="status"><span>9:30</span><span>▮▮▮</span></div>
+        <div class="screen-pad" style="background:#FFF">
+          <div style="font-weight:700;font-size:14px">쏙메모 다운로드</div>
+          <div style="font-weight:700">최신 버전: 1.0.9</div>
+          <div class="tap" style="color:var(--sys-blue);font-weight:700;padding:2px 4px">ssokmemo-1.0.9.apk 내려받기</div>
+        </div>
+      </div>
+    </div>
+    <div class="text">
+      <h3><span class="num">1</span>파일 받기</h3>
+      <p>위의 노란 <span class="ui">쏙메모 내려받기</span>를 누르세요.</p>
+      <div class="tip"><b>카톡에서 이 글을 보고 계신가요?</b><br>오른쪽 위 점 세 개 <span class="ui">⋮</span>를 누르고, <span class="ui">다른 브라우저로 열기</span>를 누른 뒤 다시 해 보세요.</div>
+      <p>"위험할 수 있다"는 말이 나와도 괜찮아요. <span class="ui">다운로드</span>를 누르세요.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="fig">
+      <div class="phone sys">
+        <div class="status"><span>9:31</span><span>▮▮▮</span></div>
+        <div class="notif">
+          <div style="font-weight:700">ssokmemo-1.0.9.apk</div>
+          <div style="font-size:11.5px">다운로드 완료</div>
+          <div style="display:flex;justify-content:flex-end"><span class="tap" style="color:var(--sys-blue);font-weight:700;padding:2px 8px">열기</span></div>
+        </div>
+        <div style="height:80px"></div>
+      </div>
+    </div>
+    <div class="text">
+      <h3><span class="num">2</span>"열기" 누르기</h3>
+      <p>다 받으면 화면 아래에 <span class="ui">열기</span>가 나와요. 누르세요.</p>
+      <p>못 찾겠으면 <b>내 파일</b> 앱 → <b>다운로드</b>에서 <b>ssokmemo</b>로 시작하는 파일을 누르세요.</p>
+    </div>
+  </div>
+
+  <div class="step" id="autoblock">
+    <div class="fig">
+      <div class="phone sys">
+        <div class="status"><span>9:31</span><span>▮▮▮</span></div>
+        <div class="screen-pad">
+          <div style="font-size:11px;opacity:.7">‹ 보안 및 개인정보 보호</div>
+          <div style="font-weight:700;font-size:14px">보안 위험 자동 차단</div>
+          <div class="toggle tap"><span>사용 안 함</span><span class="sw" style="background:#BBB"></span></div>
+        </div>
+        <div style="height:50px"></div>
+      </div>
+    </div>
+    <div class="text">
+      <h3><span class="num">3</span>"차단됨"이 나오면 (갤럭시)</h3>
+      <p>"보안 위험 자동 차단" 때문에 설치가 안 될 때만 하세요. 안 나오면 4번으로 가세요.</p>
+      <ol class="big">
+        <li><b>설정</b> 앱(톱니바퀴)을 엽니다.</li>
+        <li><span class="ui">보안 및 개인정보 보호</span>를 누릅니다.</li>
+        <li><span class="ui">보안 위험 자동 차단</span>을 누릅니다. (옛날 휴대폰은 <span class="ui">자동 차단기</span>)</li>
+        <li>스위치를 눌러 <b>끕니다</b>. 비밀번호나 지문을 물으면 넣으세요.</li>
+        <li>2번으로 돌아가 파일을 다시 누르세요.</li>
+      </ol>
+      <div class="tip"><b>설치가 끝나면 꼭 다시 켜 주세요.</b> 같은 곳에서 스위치를 다시 누르면 돼요. 다시 켜도 쏙메모는 잘 됩니다.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="fig">
+      <div class="phone sys">
+        <div class="status"><span>9:31</span><span>▮▮▮</span></div>
+        <div class="screen-pad">
+          <div style="font-weight:700;font-size:14px">출처를 알 수 없는 앱 설치</div>
+          <div class="toggle tap"><span>이 출처 허용</span><span class="sw"></span></div>
+        </div>
+        <div style="height:60px"></div>
+      </div>
+    </div>
+    <div class="text">
+      <h3><span class="num">4</span>"이 출처 허용" 켜기</h3>
+      <p>"설치할 수 없습니다"가 나오면 <span class="ui">설정</span>을 누르세요.</p>
+      <p><span class="ui">이 출처 허용</span> 스위치를 켜고, <b>뒤로 가기</b>를 누르세요.</p>
+      <p class="small">처음 한 번만 나와요.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="fig">
+      <div class="phone sys">
+        <div class="status"><span>9:32</span><span>▮▮▮</span></div>
+        <div class="dialog">
+          <div class="t">Play 프로텍트에서 차단됨</div>
+          <div style="font-size:11.5px" class="tap">&nbsp;세부정보 ▾&nbsp;</div>
+          <div style="font-size:11.5px;color:var(--sys-blue);font-weight:700">무시하고 설치</div>
+        </div>
+        <div style="height:30px"></div>
+      </div>
+    </div>
+    <div class="text">
+      <h3><span class="num">5</span>경고가 나오면</h3>
+      <p>구글이 "모르는 앱"이라고 한 번 물어보는 거예요. 걱정하지 않으셔도 돼요.</p>
+      <p><span class="ui">세부정보</span>를 누르고 <span class="ui">무시하고 설치</span>를 누르세요.</p>
+      <p class="small">안 나오는 휴대폰도 있어요.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="fig">
+      <div class="phone sys">
+        <div class="status"><span>9:32</span><span>▮▮▮</span></div>
+        <div class="screen-pad" style="justify-items:center;padding-top:20px">
+          <div style="width:52px;height:52px;border-radius:14px;background:var(--app-lemon);display:grid;place-items:center;font-family:var(--display);font-size:20px;color:var(--app-ink)">쏙</div>
+          <div style="font-weight:700">쏙메모</div>
+          <div style="display:flex;gap:30px;margin-top:12px;font-weight:700;color:var(--sys-blue)"><span>완료</span><span class="tap" style="padding:0 6px">열기</span></div>
+        </div>
+        <div style="height:40px"></div>
+      </div>
+    </div>
+    <div class="text">
+      <h3><span class="num">6</span>"설치" → "열기"</h3>
+      <p><span class="ui">설치</span>를 누르고 잠깐 기다리세요. 다 되면 <span class="ui">열기</span>를 누르세요.</p>
+      <p>이제 휴대폰 화면에 노란 <b>쏙메모</b> 그림이 생겨요.</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="next">
+  <h2>설치 끝!</h2>
+  <p class="intro">이제 카톡 글을 모아 볼까요?</p>
+  <a class="dl" href="https://leejongyoun1.github.io/memoAppDownload/guide.html">사용 설명서 보기 →</a>
+</section>
+<section id="faq">
+  <h2>설치할 때 자주 묻는 질문</h2>
+  <div>
+    <details><summary>새 버전을 설치하면 메모가 지워지나요?</summary>
+      <p>아니요. 지우지 않고 그 위에 설치하면 메모는 그대로 남아요.</p></details>
+    <details><summary>"앱이 설치되지 않았습니다"가 나와요</summary>
+      <p>휴대폰에 공간이 부족하거나, 다른 곳에서 받은 쏙메모가 이미 있을 수 있어요. 자녀분께 보여 주고 도움을 받으세요.</p></details>
+    <details><summary>아이폰에서도 되나요?</summary>
+      <p>아니요. 지금은 안드로이드 휴대폰(갤럭시 등)에서만 돼요.</p></details>
+  </div>
+</section>
+<footer>
+  쏙메모 1.0.9 설치 방법. 그림은 간단히 그린 것이라 실제 화면과 조금 다를 수 있어요.
+  다운로드 페이지: <a href="https://github.com/LeeJongYoun1/memoAppDownload">github.com/LeeJongYoun1/memoAppDownload</a>
+</footer>
+</div>
+
+<script>
+(() => {
+  const st = (t) => `<div class="status"><span>${t}</span><span>▮▮▮</span></div>`;
+  const kbd = '<div class="kbd">' + '<i></i>'.repeat(20) + '</div>';
+  const appIcon = '<div style="width:52px;height:52px;border-radius:14px;background:var(--app-lemon);display:grid;place-items:center;font-family:var(--display);font-size:20px;color:var(--app-ink)">쏙</div>';
+  const chat = (extra = '') => `<div class="phone" style="background:#B2C7DA">${st('10:02')}<div class="chat">
+      <div class="kbubble">내일 3시 강남역 2번 출구에서 만나요</div>
+      <div class="kbubble tt-msg">주소: 서울시 강남구 테헤란로 123, 5층</div>
+      <div class="kbubble me">넵 알겠습니다</div></div>${extra}</div>`;
+  const youtube = (extra = '') => `<div class="phone" style="background:#111;color:#EEE">${st('11:05')}
+      <div style="height:130px;background:linear-gradient(135deg,#334,#556 60%,#223)"></div>
+      <div class="screen-pad" style="color:#EEE"><b>주말 베란다 정원 가꾸기</b><span style="opacity:.6;font-size:11px">조회수 1.2만회</span></div>${extra}</div>`;
+
+  const notif = () => `<div class="phone sys">${st('9:31')}<div class="notif"><div style="font-size:11px;opacity:.7">Chrome · 방금</div>
+      <div style="font-weight:700">ssokmemo-1.0.9.apk</div><div style="font-size:11.5px">다운로드 완료</div>
+      <div style="display:flex;justify-content:flex-end"><span class="tt" style="color:var(--sys-blue);font-weight:700;padding:2px 8px">열기</span></div></div></div>`;
+  const settings = (target) => `<div class="phone sys">${st('9:31')}<div class="screen-pad"><div style="font-weight:700;font-size:16px">설정</div>
+      ${['연결', '소리 및 진동', '알림', '디스플레이', '배터리', '보안 및 개인정보 보호', '애플리케이션']
+        .map((t) => `<div class="toggle${t === target ? ' tt' : ''}" style="padding:8px 12px">${t}</div>`).join('')}</div></div>`;
+  const autoblock = (on, done) => `<div class="phone sys">${st('9:32')}<div class="screen-pad"><div style="font-size:11px;opacity:.7">‹ 보안 및 개인정보 보호</div>
+      <div style="font-weight:700;font-size:14px">보안 위험 자동 차단</div>
+      <div style="font-size:11px;opacity:.75">승인되지 않은 출처의 앱 설치와 악성 활동을 차단합니다.</div>
+      <div class="toggle"><span>${on ? '사용 중' : '사용 안 함'}</span><span class="sw${done ? '' : ' tt'}"${on ? '' : ' style="background:#BBB"'}></span></div></div></div>`;
+  // 장면: html, cap(설명), sub(보충), tap(누를 곳), long(꾹 누르기), swipe(쓸어내리기), type(글자 입력), dur(멈춤 시간)
+  const CLIPS = {
+    install: [
+      { cap: '다운로드 페이지에서 내려받기 링크를 눌러요', sub: '업데이트할 때도 똑같이 새 파일을 받아요', tap: '.tt',
+        html: `<div class="phone sys">${st('9:30')}<div class="screen-pad" style="background:#FFF">
+          <div style="font-weight:700;font-size:14px">쏙메모 다운로드</div>
+          <div style="font-size:11.5px;opacity:.8">카톡 등 메신저에서 받은 메시지·사진을 공유 → 쏙메모로…</div>
+          <div style="font-weight:700">최신 버전: 1.0.9</div>
+          <div class="tt" style="color:var(--sys-blue);font-weight:700">ssokmemo-1.0.9.apk 내려받기</div>
+          <div style="font-size:11px;opacity:.7">(모든 휴대폰용, 약 33MB)</div></div></div>` },
+      { cap: '다운로드가 끝나면 "열기"를 눌러요', tap: '.tt', html: notif() },
+      { cap: '"보안 위험 자동 차단" 때문에 막히면 "확인"을 눌러요', sub: '갤럭시 기준. 이 창이 안 나오면 10번으로 건너뛰어요', tap: '.tt',
+        html: `<div class="phone sys">${st('9:31')}<div class="dialog" style="margin-top:110px"><div class="t">보안 위험 자동 차단에 의해 설치가 차단됨</div>
+          <div style="font-size:11.5px">휴대전화 보호를 위해 승인되지 않은 출처의 앱 설치가 차단되었습니다.</div>
+          <div class="acts"><span class="tt" style="padding:0 6px">확인</span></div></div></div>` },
+      { cap: '홈 화면에서 "설정" 앱을 열어요', tap: '.tt',
+        html: `<div class="phone" style="background:linear-gradient(160deg,#9CB7D8,#E8D3B0)">${st('9:31')}<div class="apps" style="padding:40px 14px;row-gap:16px;color:#FFF">
+          <div><div class="ic" style="background:#FFF;color:#333">◷</div>시계</div><div><div class="ic" style="background:#4C8BF5">✉</div>메시지</div>
+          <div><div class="ic" style="background:#FEE500;color:#3B1E1E">톡</div>카카오톡</div><div><div class="ic" style="background:var(--app-lemon);color:var(--app-ink);font-family:var(--display)">쏙</div>쏙메모</div>
+          <div><div class="ic" style="background:#1DB954">♪</div>음악</div><div><div class="ic" style="background:#E94235">▶</div>YouTube</div>
+          <div><div class="ic" style="background:#5B5F66">✦</div>갤러리</div><div class="tt"><div class="ic" style="background:#7A7F88">⚙</div>설정</div></div></div>` },
+      { cap: '"보안 및 개인정보 보호"를 눌러요', sub: '아래쪽에 있으면 화면을 올려서 찾아요', tap: '.tt', html: settings('보안 및 개인정보 보호') },
+      { cap: '"보안 위험 자동 차단"을 눌러요', sub: '예전 휴대폰은 "자동 차단기"', tap: '.tt',
+        html: `<div class="phone sys">${st('9:32')}<div class="screen-pad"><div style="font-weight:700;font-size:15px">‹ 보안 및 개인정보 보호</div>
+          <div class="toggle" style="display:grid;gap:2px"><b>보안 상태</b><span style="font-size:11px;opacity:.7">문제가 발견되지 않았습니다</span></div>
+          <div class="toggle tt" style="display:grid;gap:2px"><b>보안 위험 자동 차단</b><span style="font-size:11px;color:var(--sys-blue)">사용 중</span></div>
+          <div class="toggle">생체 인식 보안</div><div class="toggle">개인정보 보호</div><div class="toggle">기타 보안 설정</div></div></div>` },
+      { cap: '스위치를 눌러 꺼요', tap: '.tt', html: autoblock(true) },
+      { cap: '"끄기"를 누르고, 휴대폰 비밀번호나 지문을 입력해요', tap: '.tt',
+        html: `<div class="phone sys">${st('9:32')}<div class="dialog" style="margin-top:110px"><div class="t">보안 위험 자동 차단을 끌까요?</div>
+          <div style="font-size:11.5px">승인되지 않은 출처의 앱을 설치할 수 있게 됩니다.</div>
+          <div class="acts"><span>취소</span><span class="tt" style="padding:0 6px">끄기</span></div></div></div>` },
+      { cap: '꺼졌어요. 다운로드 알림이나 "내 파일 → 다운로드"에서 파일을 다시 눌러요', dur: 2800, html: autoblock(false, true) },
+      { cap: '"이 출처 허용"을 켜고, 뒤로 가요', sub: '처음 한 번만 나와요', tap: '.tt',
+        html: `<div class="phone sys">${st('9:33')}<div class="screen-pad"><div style="font-weight:700;font-size:14px">출처를 알 수 없는 앱 설치</div>
+          <div class="toggle"><span>이 출처 허용</span><span class="sw tt" style="background:#BBB"></span></div></div></div>` },
+      { cap: '"설치"를 눌러요', sub: '업데이트라면 "업데이트"라고 나와요. 메모는 그대로 남아요', tap: '.tt',
+        html: `<div class="phone sys">${st('9:33')}<div class="dialog" style="margin-top:110px">${appIcon}<div class="t">쏙메모</div>
+          <div style="font-size:11.5px">이 앱을 설치하시겠습니까?</div>
+          <div class="acts"><span>취소</span><span class="tt" style="padding:0 6px">설치</span></div></div></div>` },
+      { cap: '설치 끝! "열기"를 누르면 시작돼요', tap: '.tt',
+        html: `<div class="phone sys">${st('9:34')}<div class="screen-pad" style="justify-items:center;padding-top:60px">${appIcon}
+          <div style="font-weight:700">쏙메모</div><div style="font-size:11.5px">앱이 설치되었습니다.</div>
+          <div style="display:flex;gap:30px;margin-top:20px;font-weight:700;color:var(--sys-blue)"><span>완료</span><span class="tt" style="padding:0 6px">열기</span></div></div></div>` },
+      { cap: '마지막으로 "보안 위험 자동 차단"을 다시 켜 두세요', sub: '설정 → 보안 및 개인정보 보호 → 보안 위험 자동 차단', tap: '.tt', html: autoblock(false) },
+      { cap: '다시 켜졌어요. 쏙메모는 그대로 잘 동작해요', dur: 2400, html: autoblock(true, true) },
+    ],
+    share: [
+      { cap: '붙이고 싶은 메시지를 손가락으로 꾹 눌러요', tap: '.tt-msg', long: true, html: chat() },
+      { cap: '메뉴에서 "공유"를 눌러요', sub: '카톡 버전에 따라 메뉴 모양이 다를 수 있어요', tap: '.tt',
+        html: chat(`<div class="kmenu"><div>답장</div><div>복사</div><div>전달</div><div class="tt" style="font-weight:700">공유</div><div>나에게</div><div>삭제</div></div>`) },
+      { cap: '앱 목록에서 "쏙메모"를 눌러요', tap: '.tt',
+        html: `<div class="phone sys" style="display:grid;grid-template-rows:auto 1fr auto">${st('10:02')}<div style="background:rgba(0,0,0,.3)"></div>
+          <div class="chooser"><div style="font-weight:700">공유</div><div class="apps">
+          <div><div class="ic" style="background:#FEE500;color:#3B1E1E">톡</div>카카오톡</div>
+          <div><div class="ic" style="background:#4C8BF5">M</div>메시지</div>
+          <div class="tt"><div class="ic" style="background:var(--app-lemon);color:var(--app-ink);font-family:var(--display)">쏙</div><b>쏙메모</b></div>
+          <div><div class="ic" style="background:#34A853">D</div>Drive</div></div></div></div>` },
+      { cap: '붙일 메모를 눌러요', sub: '새 메모로 만들려면 "+ 새 메모"', tap: '.tt',
+        html: `<div class="phone" style="background:#888;display:grid;grid-template-rows:auto 1fr auto">${st('10:02')}<div></div>
+          <div class="sheet"><div class="grab"></div><div class="lbl">붙여넣을 내용</div>
+          <div class="bubble">주소: 서울시 강남구 테헤란로 123, 5층</div>
+          <div class="lbl">폴더</div><div class="panel"><div class="tree">🏠 쏙메모 (최상위)</div>
+          <div class="tree" style="padding-left:16px">▾ 가족</div><div class="tree tt" style="padding-left:30px">📝 약속 장소 모음</div>
+          <div class="tree" style="padding-left:16px">▸ 회사</div></div>
+          <div class="lbl">만들 위치: 쏙메모</div><div class="btns"><span class="b">+ 새 폴더</span><span class="b fill">+ 새 메모</span></div></div></div>` },
+      { cap: '붙은 모습을 확인하고 "완료"를 눌러요', sub: '받은 앱과 시각이 자동으로 적혀요', tap: '.tt',
+        html: `<div class="phone" style="background:#888;display:grid;grid-template-rows:auto 1fr auto">${st('10:03')}<div></div>
+          <div class="sheet"><div class="grab"></div><div style="font-weight:700;font-size:14px">약속 장소 모음</div>
+          <div class="stamp">(카카오톡) 26/10/28 18:20<br>홍대입구역 9번 출구</div>
+          <div class="stamp" style="font-weight:700;margin-top:6px">(카카오톡) 26/11/04 10:03</div>
+          <div class="field">주소: 서울시 강남구 테헤란로 123, 5층</div>
+          <div class="btns"><span class="b text">되돌리기</span><span class="b fill tt">완료</span></div></div></div>` },
+      { cap: '카톡 화면으로 그대로 돌아와요. 끝!', dur: 2200, html: chat() },
+    ],
+    quick: [
+      { cap: '어느 화면에서든 맨 위에서 아래로 쓸어내려요', swipe: true, html: youtube() },
+      { cap: '연필 모양 "쏙메모" 타일을 눌러요', tap: '.tt',
+        html: `<div class="phone" style="background:#1F2228">${st('11:05')}<div class="qs"><div class="rtiles">
+          <div><span class="rt on">W</span>Wi-Fi</div><div><span class="rt">B</span>블루투스</div>
+          <div><span class="rt">☼</span>손전등</div><div class="tt"><span class="rt">✎</span>쏙메모</div></div>
+          <div style="height:4px;background:#555;border-radius:2px"></div></div><div style="height:240px;background:#2A2D33"></div></div>` },
+      { cap: '메모 창이 뜨면 바로 적어요', type: '주말에 베란다 화분 분갈이',
+        html: `<div class="phone" style="background:#777;display:grid;grid-template-rows:auto 1fr auto auto">${st('11:05')}<div></div>
+          <div class="sheet"><div class="lbl">저장 위치: 쏙메모 › 아이디어 ▸</div><div class="field"><span class="typing"></span></div>
+          <div class="btns" style="justify-content:space-between"><span class="b text">📋 붙여넣기</span><span class="b fill">저장</span></div></div>${kbd}</div>` },
+      { cap: '"저장"을 눌러요', tap: '.tt',
+        html: `<div class="phone" style="background:#777;display:grid;grid-template-rows:auto 1fr auto auto">${st('11:06')}<div></div>
+          <div class="sheet"><div class="lbl">저장 위치: 쏙메모 › 아이디어 ▸</div><div class="field">주말에 베란다 화분 분갈이</div>
+          <div class="btns" style="justify-content:space-between"><span class="b text">📋 붙여넣기</span><span class="b fill tt">저장</span></div></div>${kbd}</div>` },
+      { cap: '"저장했어요"가 뜨고 보던 화면으로 돌아와요', sub: '메모는 "아이디어" 폴더에 들어갔어요', dur: 2400,
+        html: youtube('<div class="snack">저장했어요</div>') },
+    ],
+  };
+
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms * 1.4)); // 어르신용으로 천천히
+
+  document.querySelectorAll('.video').forEach((box) => {
+    const scenes = CLIPS[box.dataset.clip];
+    const stage = box.querySelector('.stage');
+    const cap = box.querySelector('.vcap');
+    const pp = box.querySelector('.pp');
+    const rr = box.querySelector('.rr');
+    const dots = box.querySelector('.dots');
+    dots.innerHTML = scenes.map(() => '<i></i>').join('');
+    const finger = document.createElement('div');
+    finger.className = 'finger';
+    let i = 0, playing = false, run = 0;
+
+    const show = (k) => {
+      const sc = scenes[k];
+      stage.innerHTML = `<div class="scene">${sc.html}</div>`;
+      stage.appendChild(finger);
+      finger.className = 'finger';
+      cap.innerHTML = `${k + 1}/${scenes.length} · ${sc.cap}${sc.sub ? `<small>${sc.sub}</small>` : ''}`;
+      [...dots.children].forEach((d, n) => d.classList.toggle('done', n <= k));
+    };
+    const at = (x, y, instant) => {
+      if (instant) finger.style.transition = 'none';
+      finger.style.transform = `translate(${x}px, ${y}px)`;
+      if (instant) { void finger.offsetWidth; finger.style.transition = ''; }
+    };
+    const center = (el) => {
+      const a = stage.getBoundingClientRect(), b = el.getBoundingClientRect();
+      return [b.left - a.left + b.width / 2, b.top - a.top + b.height / 2];
+    };
+    const overlay = (again) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'playover';
+      b.setAttribute('aria-label', again ? '다시 보기' : '재생');
+      b.innerHTML = `<span>${again ? '↺' : '▶'}</span>`;
+      b.onclick = () => (again ? restart() : play());
+      stage.appendChild(b);
+    };
+    const setBtn = (on) => {
+      pp.textContent = on ? '❚❚' : '▶';
+      pp.setAttribute('aria-label', on ? '일시정지' : '재생');
+    };
+
+    async function scene(k, my) {
+      const sc = scenes[k];
+      show(k);
+      const W = stage.clientWidth, H = stage.clientHeight;
+      at(W * 0.75, H * 0.85, true);
+      await wait(700); if (my !== run) return;
+      if (sc.swipe) {
+        at(W / 2, 14, true); finger.classList.add('on', 'press');
+        await wait(150); at(W / 2, H * 0.55);
+        await wait(900); finger.classList.remove('on', 'press');
+        await wait(400); return;
+      }
+      if (sc.type) {
+        const el = stage.querySelector('.typing');
+        for (const ch of sc.type) { el.textContent += ch; await wait(110); if (my !== run) return; }
+        await wait(700); return;
+      }
+      if (sc.tap) {
+        const el = stage.querySelector(sc.tap);
+        finger.classList.add('on');
+        at(...center(el));
+        await wait(850); if (my !== run) return;
+        finger.classList.add('press');
+        await wait(sc.long ? 1100 : 280);
+        finger.classList.remove('press');
+        await wait(450); return;
+      }
+      await wait(sc.dur || 1800);
+    }
+
+    async function play() {
+      if (playing) return;
+      playing = true; setBtn(true);
+      const my = ++run;
+      for (; i < scenes.length; i++) {
+        await scene(i, my);
+        if (my !== run) return;
+      }
+      playing = false; i = 0; setBtn(false);
+      overlay(true);
+    }
+    function pause() {
+      run++; playing = false; setBtn(false);
+      show(i); overlay(false);
+    }
+    function restart() { run++; playing = false; i = 0; play(); }
+
+    pp.onclick = () => (playing ? pause() : play());
+    rr.onclick = restart;
+    show(0); overlay(false);
+  });
+})();
+</script>
+</body>
+</html>

@@ -6,7 +6,9 @@
 
 **[ssokmemo-1.0.9.apk 내려받기](https://github.com/LeeJongYoun1/memoAppDownload/raw/main/ssokmemo-1.0.9.apk)** (모든 휴대폰용, 약 33MB)
 
-처음 쓰신다면 **[그림으로 보는 쏙메모 사용 설명서](https://leejongyoun1.github.io/memoAppDownload/guide.html)** 를 먼저 보세요. (설치 방법, 공유로 붙이기, 빠른 메모, 백업까지)
+처음 쓰신다면 그림 설명서를 먼저 보세요.
+- **[쏙메모 설치 방법](https://leejongyoun1.github.io/memoAppDownload/install.html)** (처음 설치, 새 버전으로 바꾸기)
+- **[쏙메모 사용 설명서](https://leejongyoun1.github.io/memoAppDownload/guide.html)** (카톡 글 모으기, 빠른 메모, 백업 등)
 
 **바뀐 점**
 - **빠른 메모**: 어느 화면에서든 화면 위를 쓸어내려 **쏙메모** 타일을 누르면 작은 메모 창이 떠서 바로 새 메모를 저장합니다.
