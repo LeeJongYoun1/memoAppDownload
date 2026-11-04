@@ -2,9 +2,9 @@
 
 카톡 등 메신저에서 받은 메시지·사진을 **공유 → 쏙메모**로 폴더별 메모에 바로 붙여 두는 앱입니다.
 
-## 최신 버전: 1.0.7
+## 최신 버전: 1.0.8
 
-**[ssokmemo-1.0.7.apk 내려받기](https://github.com/LeeJongYoun1/memoAppDownload/raw/main/ssokmemo-1.0.7.apk)** (모든 휴대폰용, 약 52MB)
+**[ssokmemo-1.0.8.apk 내려받기](https://github.com/LeeJongYoun1/memoAppDownload/raw/main/ssokmemo-1.0.8.apk)** (모든 휴대폰용, 약 52MB)
 
 **바뀐 점**
 - 보안 강화: 다른 앱이 공유 기능을 악용하지 못하도록 막았습니다.
